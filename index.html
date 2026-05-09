@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Substantive Audit Program — Engagement Summary</title>
+  <style>
+:root {
+  --bg: #fafafa;
+  --fg: #1a1a1a;
+  --muted: #666;
+  --accent: #0b6cb1;
+  --border: #e3e3e3;
+  --major: #c0392b;
+  --moderate: #d68910;
+  --minor: #2980b9;
+  --info: #7f8c8d;
+  --applied: #27ae60;
+  --inquiry: #8e44ad;
+  --datamissing: #95a5a6;
+  --na: #bdc3c7;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--fg);
+  background: var(--bg);
+  margin: 0;
+  padding: 0;
+}
+.container { max-width: 1100px; margin: 0 auto; padding: 1.5rem 2rem 4rem; }
+header {
+  background: white;
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+header .nav {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  gap: 1.4rem;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+header .brand { font-weight: 600; color: var(--accent); margin-right: auto; text-decoration: none; }
+header a { color: var(--fg); text-decoration: none; font-size: 14px; }
+header a:hover { color: var(--accent); }
+header a.active { color: var(--accent); font-weight: 600; }
+h1 { font-size: 1.7rem; margin: 0.5rem 0 0.3rem; }
+h2 { font-size: 1.25rem; margin: 2rem 0 0.6rem; padding-top: 0.5rem; border-top: 1px solid var(--border); }
+h3 { font-size: 1.05rem; margin: 1.5rem 0 0.4rem; color: var(--accent); }
+h4 { font-size: 0.95rem; margin: 1rem 0 0.3rem; }
+p { margin: 0.6rem 0; }
+.subtitle { color: var(--muted); margin: 0 0 1rem; font-size: 0.9rem; }
+.meta-line { color: var(--muted); font-size: 0.85rem; margin: 0.2rem 0; }
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0.8rem 0 1.4rem;
+  font-size: 0.92rem;
+  background: white;
+}
+th, td {
+  border: 1px solid var(--border);
+  padding: 0.45rem 0.7rem;
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #f0f0f0; font-weight: 600; }
+tr:nth-child(even) td { background: #fafafa; }
+code { background: #f0f0f0; padding: 0.05rem 0.3rem; border-radius: 3px; font-size: 0.88em; }
+pre { background: #1e1e1e; color: #e0e0e0; padding: 0.9rem 1.1rem; border-radius: 5px; overflow-x: auto; font-size: 0.82rem; line-height: 1.45; }
+pre code { background: transparent; padding: 0; color: inherit; }
+ul, ol { margin: 0.4rem 0; padding-left: 1.5rem; }
+li { margin: 0.15rem 0; }
+.severity-major, .badge.major     { color: white; background: var(--major); }
+.severity-moderate, .badge.moderate { color: white; background: var(--moderate); }
+.severity-minor, .badge.minor     { color: white; background: var(--minor); }
+.severity-informational, .badge.informational { color: white; background: var(--info); }
+.severity-applied, .badge.applied { color: white; background: var(--applied); }
+.severity-inquiry-only, .badge.inquiry-only { color: white; background: var(--inquiry); }
+.severity-data-missing, .badge.data-missing { color: white; background: var(--datamissing); }
+.severity-not-applicable, .badge.not-applicable { color: var(--fg); background: var(--na); }
+.badge {
+  display: inline-block;
+  padding: 0.05rem 0.5rem;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: lowercase;
+  letter-spacing: 0.02em;
+}
+.area-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.area-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem 1.2rem;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.area-card:hover { border-color: var(--accent); box-shadow: 0 2px 6px rgba(11,108,177,0.1); }
+.area-card .name { font-size: 1.05rem; font-weight: 600; color: var(--accent); margin: 0; }
+.area-card .stats { color: var(--muted); font-size: 0.82rem; margin-top: 0.3rem; }
+.kpi-row {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  margin: 1.2rem 0;
+}
+.kpi {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 0.7rem 1rem;
+  flex: 1 1 130px;
+}
+.kpi .label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.kpi .value { font-size: 1.4rem; font-weight: 600; margin-top: 0.15rem; }
+.kpi.major .value     { color: var(--major); }
+.kpi.moderate .value  { color: var(--moderate); }
+.kpi.minor .value     { color: var(--minor); }
+.kpi.info .value      { color: var(--info); }
+footer {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+@media (max-width: 700px) {
+  .container { padding: 1rem; }
+  header { padding: 0.8rem 1rem; }
+  table { font-size: 0.85rem; }
+  th, td { padding: 0.35rem 0.45rem; }
+}
+</style>
+</head>
+<body>
+<header><nav class="nav"><a class="brand" href="index.html">Substantive Audit Program</a><a class="" href="ap.html">Accounts Payable</a><a class="" href="ar.html">Accounts Receivable</a><a class="" href="inventory.html">Inventory</a><a class="" href="revenue_expense.html">Revenue & Expense</a></nav></header>
+<div class="container">
+<p class="subtitle">Dataset: <code>/Users/rantene/gits/audit_csv</code> · 11 enriched tables · 4 of 12 financial-statement areas applicable</p>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="label">Total findings</div><div class="value">41</div></div>
+  <div class="kpi major"><div class="label">Major</div><div class="value">14</div></div>
+  <div class="kpi moderate"><div class="label">Moderate</div><div class="value">13</div></div>
+  <div class="kpi minor"><div class="label">Minor</div><div class="value">8</div></div>
+  <div class="kpi info"><div class="label">Informational</div><div class="value">6</div></div>
+</div>
+
+<div class="area-grid">
+  <a class="area-card" href="ap.html"><div class="name">Accounts Payable</div><div class="stats">9 findings · 3 major / 4 moderate / 1 minor / 1 informational</div></a>
+  <a class="area-card" href="ar.html"><div class="name">Accounts Receivable</div><div class="stats">11 findings · 3 major / 3 moderate / 3 minor / 2 informational</div></a>
+  <a class="area-card" href="inventory.html"><div class="name">Inventory</div><div class="stats">11 findings · 4 major / 3 moderate / 2 minor / 2 informational</div></a>
+  <a class="area-card" href="revenue_expense.html"><div class="name">Revenue &amp; Expense</div><div class="stats">10 findings · 4 major / 3 moderate / 2 minor / 1 informational</div></a>
+</div>
+<h1 id="substantive-audit-program-engagement-summary">Substantive audit program — engagement summary</h1>
+<p>Source template: AuditNet 201612_SubstantiveTest_AP_Template.xlsx
+Dataset: /Users/rantene/gits/audit_csv
+Enrichment: /Users/rantene/gits/audit_csv/.semantic-enricher/
+Generated: 2026-05-09</p>
+<h2 id="areas-covered">Areas covered</h2>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Decision</th>
+<th>Primary table</th>
+<th>Findings</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AP</td>
+<td><span class="badge applied">applied</span></td>
+<td>BALANCE SHEET DATA__ACCOUNTS-PAYABLE</td>
+<td>9 (3 major, 4 moderate, 1 minor, 1 informational)</td>
+</tr>
+<tr>
+<td>AR</td>
+<td><span class="badge applied">applied</span></td>
+<td>BALANCE SHEET DATA__ACCOUNTS-RECEIVABLE</td>
+<td>11 (3 major, 3 moderate, 3 minor, 2 informational)</td>
+</tr>
+<tr>
+<td>Inventory</td>
+<td><span class="badge applied">applied</span></td>
+<td>SALES DATA__INVENTORY-TRACKING</td>
+<td>11 (4 major, 3 moderate, 2 minor, 2 informational)</td>
+</tr>
+<tr>
+<td>Revenue / Expense</td>
+<td><span class="badge applied">applied</span></td>
+<td>BALANCE SHEET DATA__GENERAL-LEDGER + 4 sales tables</td>
+<td>10 (4 major, 3 moderate, 2 minor, 1 informational)</td>
+</tr>
+<tr>
+<td>Cash</td>
+<td><span class="badge not-applicable">not-applicable</span></td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Investments</td>
+<td><span class="badge not-applicable">not-applicable</span></td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>PP&amp;E</td>
+<td><span class="badge not-applicable">not-applicable</span></td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Prepaid</td>
+<td><span class="badge not-applicable">not-applicable</span></td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Payroll</td>
+<td><span class="badge not-applicable">not-applicable</span></td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Income Tax</td>
+<td><span class="badge not-applicable">not-applicable</span></td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Debt</td>
+<td><span class="badge not-applicable">not-applicable</span></td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Equity</td>
+<td><span class="badge not-applicable">not-applicable</span></td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>Areas applicable: 4 / 12. Areas applied: 4. The remaining 8 areas have no enriched table playing the area's primary role and were skipped under the conservative applicability filter.</p>
+<h2 id="findings-by-severity">Findings by severity</h2>
+<table>
+<thead>
+<tr>
+<th>Severity</th>
+<th>Count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="badge major">major</span></td>
+<td>14</td>
+</tr>
+<tr>
+<td><span class="badge moderate">moderate</span></td>
+<td>13</td>
+</tr>
+<tr>
+<td><span class="badge minor">minor</span></td>
+<td>8</td>
+</tr>
+<tr>
+<td><span class="badge informational">informational</span></td>
+<td>6</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>41</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="findings-by-assertion-interpreted">Findings by assertion (interpreted)</h2>
+<p>The four areas use their own per-area objective letters; this table re-projects each finding's tags onto the five standard audit assertions. A finding touching multiple assertions is counted in each. Counts therefore exceed 41.</p>
+<table>
+<thead>
+<tr>
+<th>Assertion</th>
+<th>Count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Existence / Occurrence</td>
+<td>28</td>
+</tr>
+<tr>
+<td>Completeness</td>
+<td>11</td>
+</tr>
+<tr>
+<td>Rights &amp; Obligations</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Valuation / Allocation</td>
+<td>21</td>
+</tr>
+<tr>
+<td>Presentation &amp; Disclosure</td>
+<td>9</td>
+</tr>
+</tbody>
+</table>
+<h2 id="findings-by-area">Findings by area</h2>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Total</th>
+<th>Major</th>
+<th>Moderate</th>
+<th>Minor</th>
+<th>Informational</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AP</td>
+<td>9</td>
+<td>3</td>
+<td>4</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>AR</td>
+<td>11</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Inventory</td>
+<td>11</td>
+<td>4</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Revenue / Expense</td>
+<td>10</td>
+<td>4</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h2 id="per-area-links">Per-area links</h2>
+<ul>
+<li><a href="ap.html#working-paper">AP working paper</a> · <a href="ap.html">summary</a></li>
+<li><a href="ar.html#working-paper">AR working paper</a> · <a href="ar.html">summary</a></li>
+<li><a href="inventory.html#working-paper">Inventory working paper</a> · <a href="inventory.html">summary</a></li>
+<li><a href="revenue_expense.html#working-paper">Revenue / Expense working paper</a> · <a href="revenue_expense.html">summary</a></li>
+</ul>
+<h2 id="top-findings">Top findings</h2>
+<ol>
+<li><strong>AP-1a / AR-2b / Inventory-4d / R&amp;E-trial-balance</strong> (major, recurring) — The General Ledger has only 5 accounts (Sales Revenue, Online Sales, COGS, Travel Expense, Payroll Expense); it has <strong>no AP control account, no AR control account, and no inventory control account</strong>, and Debits ($1,210,240.47) ≠ Credits ($1,973,281.93). Three subledgers totalling $1.42M (AP) + $2.39M (AR) + $12.84M (Inventory) cannot be reconciled to the GL.</li>
+<li><strong>AR-1d</strong> (major) — 83.6% of unpaid AR ($1,995,260 / $2,385,726, 493 invoices) sits in the 90+ days-past-due bucket at the balance-sheet date with no allowance booked. Mirrored by AP-1d on the payables side (467 / 543 unpaid invoices, 86%, 90+ days past due).</li>
+<li><strong>Inventory-10c / 13d</strong> (major) — Inventory turnover ≈ 0.012×/yr (~80 years of supply); annualised GL COGS $159,261.80 against snapshot inventory $12,838,940.73 — pervasive overstock with no allowance for obsolescence.</li>
+<li><strong>R&amp;E-1c</strong> (major) — GL revenue $1.97M vs sales-tables revenue $7.85M — ~$5.9M gap (only ~24% coverage) means revenue completeness (Objective B) cannot be supported.</li>
+<li><strong>R&amp;E-1b</strong> (major) — Returns are 24.8% of orders / $1.11M (25.3% of revenue) but no contra-revenue or allowance-for-returns account exists in the GL.</li>
+<li><strong>R&amp;E-3</strong> (major) — Top 20 GL entries cluster $4,936–$4,999, just under a $5,000 threshold — approval-bypass / split-payment pattern.</li>
+<li><strong>AP-1a / AR g0 / R&amp;E aux</strong> (major + moderate, recurring) — Cross-currency <code>Amount</code> is not FX-adjusted (mean ratio across 5 currencies = 1.14× vs ~1.9× expected). Confirms reviewer FAIL <code>g0/schema/narrative_alignment</code>.</li>
+<li><strong>AR-1c / AR-1e-5</strong> (moderate) — Zero returns or credit memos across 5,900 sales+AR rows over 30 months; status set restricted to {Open, Partial, Received}.</li>
+<li><strong>AR-Terms / AP-4</strong> (moderate, recurring) — All 900 AR invoices carry <code>Net 45</code> and all 800 AP invoices carry <code>Net 30</code>; zero variance across customers, vendors, and months is implausible.</li>
+<li><strong>AP-2a / AR-2f</strong> (moderate, recurring) — Vendor and customer concentration: only 5 distinct vendors and 5 distinct customers, each carrying ~$400–525k.</li>
+</ol>
+<h2 id="cross-area-patterns">Cross-area patterns</h2>
+<p>Three structural problems recur across all four area working papers:</p>
+<ul>
+<li><strong>Disconnected ledgers.</strong> The GL is not a control account for any subledger; AP, AR, and Inventory each total to a value with no GL counterpart.</li>
+<li><strong>No master data.</strong> No vendor master, no customer master, no employee master. Many <code>inquiry-only</code> and <code>data-missing</code> rows would be applied tests if these existed.</li>
+<li><strong>Synthetic ceilings.</strong> Ceilings on <code>Amount</code> (~$8K AR, ~$5K AP, ~$5K GL line items) explain otherwise-suspicious clusters and weaken the just-under-threshold finding signal — but the threshold-bunching pattern in R&amp;E #6 still holds.</li>
+</ul>
+<h2 id="procedure-execution-counts">Procedure execution counts</h2>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>applied</th>
+<th>inquiry-only</th>
+<th>data-missing</th>
+<th>not-applicable</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AP</td>
+<td>12</td>
+<td>9</td>
+<td>11</td>
+<td>5</td>
+</tr>
+<tr>
+<td>AR</td>
+<td>18</td>
+<td>17</td>
+<td>18</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Inventory</td>
+<td>11</td>
+<td>19</td>
+<td>17</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Revenue / Expense</td>
+<td>10</td>
+<td>1</td>
+<td>9</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>51</strong></td>
+<td><strong>46</strong></td>
+<td><strong>55</strong></td>
+<td><strong>16</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>The dataset is synthetic; reviewer finding <code>g0/schema/narrative_alignment</code> (FAIL) is the dominant data-quality flag and is cited in three of the four area reports.</li>
+<li>Cross-area reconciliation is the dominant blocker. Once an inventory / AP / AR control account exists in the GL, a large block of currently <code>data-missing</code> analytics becomes applicable.</li>
+<li>The 8 not-applicable areas (Cash, Investments, PP&amp;E, Prepaid, Payroll, Income Tax, Debt, Equity) reflect missing primary tables. To document them as out-of-scope rather than skipped, re-run with <code>/audit-program all /Users/rantene/gits/audit_csv</code>.</li>
+</ul>
+<footer>
+Generated by <code>/audit-program</code> from semantic-enricher enrichment.<br>
+Source template: AuditNet 201612_SubstantiveTest_AP_Template.xlsx (Sections III, IV, VII, XII).
+</footer>
+</div>
+</body>
+</html>

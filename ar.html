@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Accounts Receivable & Sales (Section III) — Substantive Audit</title>
+  <style>
+:root {
+  --bg: #fafafa;
+  --fg: #1a1a1a;
+  --muted: #666;
+  --accent: #0b6cb1;
+  --border: #e3e3e3;
+  --major: #c0392b;
+  --moderate: #d68910;
+  --minor: #2980b9;
+  --info: #7f8c8d;
+  --applied: #27ae60;
+  --inquiry: #8e44ad;
+  --datamissing: #95a5a6;
+  --na: #bdc3c7;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--fg);
+  background: var(--bg);
+  margin: 0;
+  padding: 0;
+}
+.container { max-width: 1100px; margin: 0 auto; padding: 1.5rem 2rem 4rem; }
+header {
+  background: white;
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+header .nav {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  gap: 1.4rem;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+header .brand { font-weight: 600; color: var(--accent); margin-right: auto; text-decoration: none; }
+header a { color: var(--fg); text-decoration: none; font-size: 14px; }
+header a:hover { color: var(--accent); }
+header a.active { color: var(--accent); font-weight: 600; }
+h1 { font-size: 1.7rem; margin: 0.5rem 0 0.3rem; }
+h2 { font-size: 1.25rem; margin: 2rem 0 0.6rem; padding-top: 0.5rem; border-top: 1px solid var(--border); }
+h3 { font-size: 1.05rem; margin: 1.5rem 0 0.4rem; color: var(--accent); }
+h4 { font-size: 0.95rem; margin: 1rem 0 0.3rem; }
+p { margin: 0.6rem 0; }
+.subtitle { color: var(--muted); margin: 0 0 1rem; font-size: 0.9rem; }
+.meta-line { color: var(--muted); font-size: 0.85rem; margin: 0.2rem 0; }
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0.8rem 0 1.4rem;
+  font-size: 0.92rem;
+  background: white;
+}
+th, td {
+  border: 1px solid var(--border);
+  padding: 0.45rem 0.7rem;
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #f0f0f0; font-weight: 600; }
+tr:nth-child(even) td { background: #fafafa; }
+code { background: #f0f0f0; padding: 0.05rem 0.3rem; border-radius: 3px; font-size: 0.88em; }
+pre { background: #1e1e1e; color: #e0e0e0; padding: 0.9rem 1.1rem; border-radius: 5px; overflow-x: auto; font-size: 0.82rem; line-height: 1.45; }
+pre code { background: transparent; padding: 0; color: inherit; }
+ul, ol { margin: 0.4rem 0; padding-left: 1.5rem; }
+li { margin: 0.15rem 0; }
+.severity-major, .badge.major     { color: white; background: var(--major); }
+.severity-moderate, .badge.moderate { color: white; background: var(--moderate); }
+.severity-minor, .badge.minor     { color: white; background: var(--minor); }
+.severity-informational, .badge.informational { color: white; background: var(--info); }
+.severity-applied, .badge.applied { color: white; background: var(--applied); }
+.severity-inquiry-only, .badge.inquiry-only { color: white; background: var(--inquiry); }
+.severity-data-missing, .badge.data-missing { color: white; background: var(--datamissing); }
+.severity-not-applicable, .badge.not-applicable { color: var(--fg); background: var(--na); }
+.badge {
+  display: inline-block;
+  padding: 0.05rem 0.5rem;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: lowercase;
+  letter-spacing: 0.02em;
+}
+.area-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.area-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem 1.2rem;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.area-card:hover { border-color: var(--accent); box-shadow: 0 2px 6px rgba(11,108,177,0.1); }
+.area-card .name { font-size: 1.05rem; font-weight: 600; color: var(--accent); margin: 0; }
+.area-card .stats { color: var(--muted); font-size: 0.82rem; margin-top: 0.3rem; }
+.kpi-row {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  margin: 1.2rem 0;
+}
+.kpi {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 0.7rem 1rem;
+  flex: 1 1 130px;
+}
+.kpi .label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.kpi .value { font-size: 1.4rem; font-weight: 600; margin-top: 0.15rem; }
+.kpi.major .value     { color: var(--major); }
+.kpi.moderate .value  { color: var(--moderate); }
+.kpi.minor .value     { color: var(--minor); }
+.kpi.info .value      { color: var(--info); }
+footer {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+@media (max-width: 700px) {
+  .container { padding: 1rem; }
+  header { padding: 0.8rem 1rem; }
+  table { font-size: 0.85rem; }
+  th, td { padding: 0.35rem 0.45rem; }
+}
+</style>
+</head>
+<body>
+<header><nav class="nav"><a class="brand" href="index.html">Substantive Audit Program</a><a class="" href="ap.html">Accounts Payable</a><a class="active" href="ar.html">Accounts Receivable</a><a class="" href="inventory.html">Inventory</a><a class="" href="revenue_expense.html">Revenue & Expense</a></nav></header>
+<div class="container">
+
+
+<h1>Accounts Receivable & Sales (Section III)</h1>
+<p class="subtitle"><a href="index.html">&larr; Engagement summary</a></p>
+
+<h2>Summary report</h2>
+<h1 id="substantive-findings-accounts-receivable-and-sales">Substantive findings — Accounts Receivable and Sales</h1>
+<p>Source template: AuditNet 201612_SubstantiveTest_AP_Template.xlsx (Section III)
+Dataset: /Users/rantene/gits/audit_csv
+Enrichment: /Users/rantene/gits/audit_csv/.semantic-enricher/
+Working paper: working_paper.md</p>
+<h2 id="procedure-execution-counts">Procedure execution counts</h2>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="badge applied">applied</span></td>
+<td>18</td>
+</tr>
+<tr>
+<td><span class="badge inquiry-only">inquiry-only</span></td>
+<td>17</td>
+</tr>
+<tr>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>18</td>
+</tr>
+<tr>
+<td><span class="badge not-applicable">not-applicable</span></td>
+<td>8</td>
+</tr>
+</tbody>
+</table>
+<h2 id="findings">Findings</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Procedure</th>
+<th>Assertion(s)</th>
+<th>Finding</th>
+<th>Severity</th>
+<th>Suggested management response</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>AR-1d</td>
+<td>A,B,C</td>
+<td>83.6% of unpaid AR ($1,995,260 / $2,385,726, 493 invoices) is in the 90+ days-past-due bucket at bs_date 2025-06-30; no allowance has been booked.</td>
+<td><span class="badge major">major</span></td>
+<td>Recompute allowance for doubtful accounts on aging-band loss rates; book the resulting reserve and disclose collection-risk concentration.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>AR-2b</td>
+<td>A</td>
+<td>GL has no AR control account (chart of accounts contains only Travel / Sales Revenue / Online Sales / COGS / Payroll); $2.39M AR listing cannot be reconciled to the GL.</td>
+<td><span class="badge major">major</span></td>
+<td>Establish an AR control account in the GL and post the subledger to it; reconcile period-end balance before close.</td>
+</tr>
+<tr>
+<td>3</td>
+<td>AR-1e-3 / AR-1e-4 / AR-10b</td>
+<td>B</td>
+<td>No allowance schedule and no write-off transaction stream are observable; allowance adequacy is not testable from data.</td>
+<td><span class="badge major">major</span></td>
+<td>Stand up an allowance schedule and write-off ledger; expose them to the audit data layer.</td>
+</tr>
+<tr>
+<td>4</td>
+<td>AR-1c / AR-1e-5</td>
+<td>A,B</td>
+<td>Zero returns or credit memos across 5,900 sales + AR rows spanning 30 months; status set restricted to {Open, Partial, Received}.</td>
+<td><span class="badge moderate">moderate</span></td>
+<td>Confirm whether returns/credit-memo activity is being captured; if so, route through a contra-revenue stream rather than suppressing.</td>
+</tr>
+<tr>
+<td>5</td>
+<td>g0 / narrative_alignment</td>
+<td>A</td>
+<td>Currency–Amount independence: median ratio across USD / EUR / GBP / CAD / AUD = 1.14× (real FX ≥ 1.5×); confirms reviewer FAIL.</td>
+<td><span class="badge moderate">moderate</span></td>
+<td>Translate or denominate per functional currency at period-end FX before aggregation.</td>
+</tr>
+<tr>
+<td>6</td>
+<td>AR-9a / AR-Terms</td>
+<td>A,C</td>
+<td>All 900 invoices have <code>Terms = Net 45</code> and <code>DueDate − InvoiceDate = 45d</code> exactly — zero variance across 5 customers and 30 months.</td>
+<td><span class="badge moderate">moderate</span></td>
+<td>Re-confirm payment terms with each customer; surface any extended-term arrangements requiring noncurrent classification.</td>
+</tr>
+<tr>
+<td>7</td>
+<td>AR-2f</td>
+<td>A</td>
+<td>AR is concentrated on 5 customers, each carrying $445k–$525k; the confirmation sample equals the population.</td>
+<td><span class="badge minor">minor</span></td>
+<td>Document concentration risk in disclosures; obtain confirmations on the full population.</td>
+</tr>
+<tr>
+<td>8</td>
+<td>AR-2c</td>
+<td>A</td>
+<td><code>Amount</code> is capped near $8,000 (99th-pct $7,954, max $7,996); top-9 invoices fall within $40 of each other — synthetic ceiling, not natural distribution.</td>
+<td><span class="badge minor">minor</span></td>
+<td>No action — observation reflects synthetic data ceiling.</td>
+</tr>
+<tr>
+<td>9</td>
+<td>AR-12d</td>
+<td>A,B</td>
+<td>Customer-purchase-history <code>UnitPrice</code> deviates from product median by &gt;50% on 905 of 1,800 rows; no list-price anchor table to cross-check.</td>
+<td><span class="badge minor">minor</span></td>
+<td>Maintain an authoritative price list / catalogue; flag transactions where price deviation exceeds policy threshold.</td>
+</tr>
+<tr>
+<td>10</td>
+<td>AR-12f</td>
+<td>B</td>
+<td><code>ARID</code> 20000–20899 and <code>OrderID</code> 200000–201199 are perfectly contiguous — zero voids over 30 months. Implausible for a real billing system.</td>
+<td><span class="badge informational">informational</span></td>
+<td>No action — observation only; would warrant follow-up in a real engagement.</td>
+</tr>
+<tr>
+<td>11</td>
+<td>AR-1e-1 / AR-1e-2</td>
+<td>A,B</td>
+<td>AR turnover ≈ 0.56; days-sales-outstanding ≈ 655. Derived from Finding #1, not an independent observation.</td>
+<td><span class="badge informational">informational</span></td>
+<td>No action — see Finding #1.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="severity-summary">Severity summary</h2>
+<table>
+<thead>
+<tr>
+<th>Severity</th>
+<th>Count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="badge major">major</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td><span class="badge moderate">moderate</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td><span class="badge minor">minor</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td><span class="badge informational">informational</span></td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<h2 id="notes">Notes</h2>
+<p>Findings #1 and #2 are the dominant blockers: aging concentration without an allowance, plus a missing GL control account. Many AR procedures degrade to <code>inquiry-only</code> (confirmations, original-document inspection) or <code>data-missing</code> (subsequent collections, write-offs, prior-period series).</p>
+
+<h2 id="working-paper">Working paper</h2>
+<h1 id="substantive-working-paper-accounts-receivable-and-sales-section-iii">Substantive working paper — Accounts Receivable and Sales (Section III)</h1>
+<p>Source template: AuditNet <code>201612_SubstantiveTest_AP_Template.xlsx</code> (AR program extracted via <code>extract_procedures.py</code>)
+Dataset: /Users/rantene/gits/audit_csv
+Enrichment: /Users/rantene/gits/audit_csv/.semantic-enricher/
+Generated: 2026-05-09</p>
+<h2 id="tables-in-scope">Tables in scope</h2>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Table</th>
+<th>Rows</th>
+<th>Key columns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Trade receivables ledger</td>
+<td><code>BALANCE SHEET DATA__ACCOUNTS-RECEIVABLE</code> (<code>Balance sheet data/Accounts-Receivable.csv</code>)</td>
+<td>900</td>
+<td>ARID, Customer, InvoiceDate, DueDate, Amount, Currency, Status, ReceivedDate, Terms</td>
+</tr>
+<tr>
+<td>General ledger</td>
+<td><code>BALANCE SHEET DATA__GENERAL-LEDGER</code> (<code>Balance sheet data/General-Ledger.csv</code>)</td>
+<td>2,000</td>
+<td>GLID, TxnDate, AccountNumber, AccountName, Debit, Credit, Dept, CostCenter, Currency</td>
+</tr>
+<tr>
+<td>Sales / customer history</td>
+<td><code>SALES DATA__CUSTOMER-PURCHASE-HISTORY</code> (<code>Sales data/Customer-Purchase-History.csv</code>)</td>
+<td>1,800</td>
+<td>CustomerID, Product, ProductCategory, PurchaseDate, Quantity, UnitPrice, TotalPrice, PaymentMethod, ReviewRating</td>
+</tr>
+<tr>
+<td>Online orders</td>
+<td><code>SALES DATA__ONLINE-STORE-ORDERS</code> (<code>Sales data/Online-Store-Orders.csv</code>)</td>
+<td>1,200</td>
+<td>OrderID, CustomerID, Date, Quantity, UnitPrice, TotalPrice, OrderStatus, TrackingNumber</td>
+</tr>
+<tr>
+<td>Retail transactions</td>
+<td><code>SALES DATA__RETAIL-STORE-TRANSACTIONS</code> (<code>Sales data/Retail-Store-Transactions.csv</code>)</td>
+<td>2,000</td>
+<td>TransactionID, StoreID, Date, Product, Quantity, UnitPrice, TotalPrice, PaymentType</td>
+</tr>
+</tbody>
+</table>
+<p>Assumed balance-sheet date: <strong>2025-06-30</strong> (latest GL <code>TxnDate</code> and latest AR <code>InvoiceDate</code>). The dataset is multi-year (2023-01-01 to 2025-06-30) and contains no explicit period closure marker. The first half of 2025 is treated as "current period in progress"; full-year analytics use 2024 as the most recent complete period.</p>
+<h2 id="audit-objectives-in-scope">Audit objectives in scope</h2>
+<ul>
+<li><strong>A.</strong> Receivables reflected in the balance sheet exist, are for valid transactions, and include all authentic obligations of third parties to the entity.</li>
+<li><strong>B.</strong> Billings are for the correct amount and uncollectible accounts are promptly identified and provided for. The allowance for uncollectible accounts is adequate.</li>
+<li><strong>C.</strong> Receivables are properly classified between current and noncurrent assets and disclosures are adequate with respect to assigned, pledged, unbilled, discounted and related-party receivables, and transfers of receivables.</li>
+</ul>
+<h2 id="cross-cutting-reviewer-evidence-cited">Cross-cutting reviewer evidence cited</h2>
+<ul>
+<li><code>review_findings.json :: g0/schema/narrative_alignment</code> (verdict <strong>fail</strong>): "Amount distributions across the 5 currencies (USD, EUR, GBP, CAD, AUD) have a maximum scale ratio of 1.1x in all three ledgers, whereas real-world exchange rates between these currencies vary by up to ~2.0x." Confirmed in this run: AR median ratio = <strong>1.14x</strong>. AR <code>Amount</code> is therefore <strong>not currency-adjusted</strong>; ratio analytics built on raw <code>Amount</code> are unreliable until either FX rates are applied or single-currency presentation is adopted.</li>
+<li><code>review_findings.json :: BALANCE SHEET DATA__ACCOUNTS-RECEIVABLE/cluster_validation/cluster_*</code> (info): InvoiceDate→DueDate, ReceivedDate→InvoiceDate, ReceivedDate→DueDate functional dependencies confirmed valid AR temporal structure.</li>
+<li><code>review_findings.json :: BALANCE SHEET DATA__ACCOUNTS-RECEIVABLE/cluster_validation/cluster_1bf4801d</code> (verdict <strong>pass</strong>): Amounts are on a consistent scale across Currencies (ratio 1.1x). This is itself the synthetic-data signal — see narrative-alignment fail.</li>
+<li><code>review_findings.json :: SALES DATA__PRODUCT-SALES-REGION/grain_overlap/SALES DATA__ONLINE-STORE-ORDERS</code> (verdict <strong>warn</strong>): identical <code>OrderID</code> grain. PSR is not used as primary source here; <code>ONLINE-STORE-ORDERS</code> is preferred per the higher-confidence enrichment.</li>
+</ul>
+<h2 id="procedure-results">Procedure results</h2>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Assertion(s)</th>
+<th>Status</th>
+<th>Test performed</th>
+<th>Result</th>
+<th>Exceptions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AR-1a</td>
+<td>A,B,C</td>
+<td>applied (partial)</td>
+<td>YoY sum of AR <code>Amount</code> by <code>InvoiceDate</code> year</td>
+<td>2023: $1,551,710 (381 rows); 2024: $1,328,714 (328); 2025-H1: $717,838 (191). 2024 ≈ 86% of 2023, consistent with mid-period 2025 cut-off. <strong>Allowance / bad-debt / returns YoY: data-missing — no allowance or write-off column on AR, no allowance line in GL.</strong></td>
+<td>0 (no allowance series)</td>
+</tr>
+<tr>
+<td>AR-1b</td>
+<td>A,B,C</td>
+<td><span class="badge applied">applied</span></td>
+<td>Monthly sales by product line on Customer-Purchase-History</td>
+<td>30 months × 3 categories (Electronics / Furniture / Office Supplies) all &gt; $20k/month. No cliffs or zero months. Sales table, not AR — see Footnote 1.</td>
+<td>0</td>
+</tr>
+<tr>
+<td>AR-1c</td>
+<td>A,B,C</td>
+<td><span class="badge applied">applied</span></td>
+<td>Monthly returns / credit memos</td>
+<td><strong>Zero negative-Amount rows in AR, CPH, Online or Retail; zero credit-memo Status values; Status set is exactly {Open, Partial, Received}.</strong> No returns stream observable.</td>
+<td>1 (no returns at all)</td>
+</tr>
+<tr>
+<td>AR-1d</td>
+<td>A,B,C</td>
+<td>applied (partial)</td>
+<td>Aging buckets vs bs_date 2025-06-30 (Open + Partial only)</td>
+<td>not-due: 36 / $143,723 (6.0%); 0-30: 23 / $91,785 (3.8%); 31-60: 26 / $67,908 (2.8%); 61-90: 21 / $87,049 (3.6%); <strong>90+: 493 rows / $1,995,260 (83.6%)</strong> of the unpaid total of $2,385,726. Prior-year comparison: data-missing (single-snapshot file, no period-end balances by year).</td>
+<td>493</td>
+</tr>
+<tr>
+<td>AR-1e-1</td>
+<td>A,B,C</td>
+<td>applied (partial)</td>
+<td>AR turnover = credit sales / avg AR; using 2024 AR-issued total ($1.33M) and Open+Partial bal ($2.39M)</td>
+<td>Turnover ≈ <strong>0.56</strong>; days-sales-in-AR ≈ <strong>655 days</strong>. Both wildly outside reasonable bounds — caveat: avg AR is single-point, and "credit sales" proxy is invoice-issuance not posted credit sales. Indicative of the 90+ bucket dominance from AR-1d, not a credible operating ratio.</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AR-1e-2</td>
+<td>A,B,C</td>
+<td>applied (partial)</td>
+<td>Days sales in AR</td>
+<td>365 / 0.56 ≈ 655 (see AR-1e-1).</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AR-1e-3</td>
+<td>A,B,C</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Allowance / gross AR; allowance / credit sales</td>
+<td>No allowance-for-doubtful-accounts column, schedule, or GL line.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-1e-4</td>
+<td>A,B,C</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Write-offs / credit sales</td>
+<td>No write-off transaction stream identifiable.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-1e-5</td>
+<td>A,B,C</td>
+<td><span class="badge applied">applied</span></td>
+<td>Sales returns / credit sales</td>
+<td>Returns = 0 across AR/CPH/Online/Retail (per AR-1c). Ratio = 0.0000. <strong>Zero returns over 30 months across 5,900 sales rows is itself an exception</strong> for a multi-channel retailer.</td>
+<td>1 (zero-returns implausibility)</td>
+</tr>
+<tr>
+<td>AR-1e-6</td>
+<td>A,B,C</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Customer discounts / credit sales</td>
+<td>No discount column on AR or sales tables (Online has <code>CouponCode</code> but no discount amount).</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-1e-7</td>
+<td>A,B,C</td>
+<td>applied (partial)</td>
+<td>Gross profit / credit sales</td>
+<td>GL has Sales Revenue ($), Online Sales ($), COGS ($397,936 cumulative debit) but no allocation by product or division. Aggregate gross-profit % computable; per-line break-out: data-missing.</td>
+<td>0</td>
+</tr>
+<tr>
+<td>AR-2a</td>
+<td>A</td>
+<td><span class="badge applied">applied</span></td>
+<td>Aged-trial-balance arithmetic recomputation</td>
+<td>Sum across {not-due, 0-30, 31-60, 61-90, 90+} = $2,385,725.73 = direct sum; diff $0.00. Arithmetically clean.</td>
+<td>0</td>
+</tr>
+<tr>
+<td>AR-2b</td>
+<td>A</td>
+<td><span class="badge applied">applied</span></td>
+<td>Reconcile listing total to GL AR control account</td>
+<td><strong>GL has no AR control account.</strong> Visible accounts: Travel Expense, Online Sales, Sales Revenue, COGS, Payroll Expense. AR listing total $2.39M cannot be reconciled.</td>
+<td>1 (no AR control)</td>
+</tr>
+<tr>
+<td>AR-2c</td>
+<td>A</td>
+<td><span class="badge applied">applied</span></td>
+<td>Investigate unusual entries (top, negative, atypical Status)</td>
+<td>99th-pct Amount = $7,954; 9 rows above (range $7,959-$7,996). All within $4 of each other and clustered near a $8,000 cap. <strong>Distribution suggests a hard upper bound on <code>Amount</code></strong> rather than organically-high invoices. Status set strictly {Open, Partial, Received} — no <code>Cancelled</code> / <code>Disputed</code> / <code>WrittenOff</code>.</td>
+<td>9</td>
+</tr>
+<tr>
+<td>AR-2d</td>
+<td>A</td>
+<td><span class="badge applied">applied</span></td>
+<td>Summarize credit balances</td>
+<td>0 rows with <code>Amount &lt; 0</code>. No reclassification needed.</td>
+<td>0</td>
+</tr>
+<tr>
+<td>AR-2e</td>
+<td>A</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Trace to subsidiary ledgers</td>
+<td>No separate AR sub-ledger table; AR file is the source of truth at invoice grain.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-2f</td>
+<td>A</td>
+<td><span class="badge applied">applied</span></td>
+<td>Confirmation sample selection (top-N by balance)</td>
+<td>Open+Partial balance is concentrated across <strong>only 5 customers</strong> (Soylent $525,925; Globex $510,047; Initech $457,012; Umbrella $447,157; Acme $445,585). The "sample" is the population.</td>
+<td>0</td>
+</tr>
+<tr>
+<td>AR-3a</td>
+<td>—</td>
+<td><span class="badge inquiry-only">inquiry-only</span></td>
+<td>Mailing of confirmation requests with auditor control</td>
+<td>Auditor workflow.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-3b</td>
+<td>—</td>
+<td><span class="badge inquiry-only">inquiry-only</span></td>
+<td>Trace confirmation balances to subsidiary accounts</td>
+<td>Auditor workflow.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-3c</td>
+<td>—</td>
+<td><span class="badge inquiry-only">inquiry-only</span></td>
+<td>Mail confirmations using auditor return address</td>
+<td>Auditor workflow.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-3d</td>
+<td>—</td>
+<td><span class="badge inquiry-only">inquiry-only</span></td>
+<td>Document client exemption requests</td>
+<td>Auditor workflow.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-3e</td>
+<td>—</td>
+<td><span class="badge inquiry-only">inquiry-only</span></td>
+<td>Re-mail returned-undeliverable confirmations</td>
+<td>Auditor workflow.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-3f</td>
+<td>—</td>
+<td><span class="badge inquiry-only">inquiry-only</span></td>
+<td>Send second positive-confirmation requests</td>
+<td>Auditor workflow.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-4a</td>
+<td>—</td>
+<td><span class="badge inquiry-only">inquiry-only</span></td>
+<td>Alternative procedures for non-replies</td>
+<td>Depends on confirmation outcomes.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-4b</td>
+<td>—</td>
+<td><span class="badge inquiry-only">inquiry-only</span></td>
+<td>Summarize confirmation results</td>
+<td>Depends on confirmation outcomes.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-5a</td>
+<td>—</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Trace confirmation-date balance to aged TB</td>
+<td>No interim confirmation-date snapshot.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-5b</td>
+<td>—</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Trace cash receipts to journal / bank statements</td>
+<td>No cash-receipts journal or bank-statement series.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-5c</td>
+<td>—</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Trace sales/revenue analysis to sales journal</td>
+<td>Single-snapshot AR file; no roll-forward analysis available.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-5d</td>
+<td>—</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Reasonableness of reconciling items</td>
+<td>Depends on AR-5b/c.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-5e</td>
+<td>—</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Trace ending balance to TB at bs_date</td>
+<td>Depends on AR-5b/c.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-5f</td>
+<td>—</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Scan interim-to-bs activity</td>
+<td>No interim/bs partition.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-6a–g</td>
+<td>—</td>
+<td><span class="badge not-applicable">not-applicable</span></td>
+<td>Notes-receivable analysis</td>
+<td>No notes-receivable table or column; AR table holds trade receivables only (Terms uniformly <code>Net 45</code>).</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-7</td>
+<td>A,C</td>
+<td><span class="badge inquiry-only">inquiry-only</span></td>
+<td>Pledged / assigned / discounted receivables</td>
+<td>No schema field captures encumbrance.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-8a</td>
+<td>A,B,C</td>
+<td><span class="badge inquiry-only">inquiry-only</span></td>
+<td>Nature of related-party receivable</td>
+<td>Auditor workflow.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-8b</td>
+<td>A,B,C</td>
+<td><span class="badge inquiry-only">inquiry-only</span></td>
+<td>Approval evidence</td>
+<td>Auditor workflow.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-8c</td>
+<td>A,B,C</td>
+<td><span class="badge inquiry-only">inquiry-only</span></td>
+<td>Confirmation of related-party balances</td>
+<td>Auditor workflow.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-8d</td>
+<td>A,B,C</td>
+<td><span class="badge applied">applied</span></td>
+<td>Customer↔vendor / employee name overlap (related-party heuristic)</td>
+<td>AR customers (5: Acme, Globex, Initech, Soylent, Umbrella) ∩ AP vendors (5: ABC Supplies, BluePrints, Fast Travel, Global Office, TechMart) = ∅. AR customers ∩ Expense-Claims EmployeeIDs = ∅. <strong>No data-detectable related-party overlap.</strong></td>
+<td>0</td>
+</tr>
+<tr>
+<td>AR-9a</td>
+<td>A,B,C</td>
+<td><span class="badge not-applicable">not-applicable</span></td>
+<td>Long-term receivables collectibility</td>
+<td>All 900 invoices have <code>DueDate − InvoiceDate = 45 days exactly</code> (i.e., zero days_to_due variance). Zero rows with maturity &gt; 1 year.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-9b</td>
+<td>A,B,C</td>
+<td><span class="badge not-applicable">not-applicable</span></td>
+<td>Allowance for credit loss on long-term</td>
+<td>as AR-9a.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-10a</td>
+<td>—</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Subsequent cash collections</td>
+<td>No post-period cash-receipts data.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-10b</td>
+<td>—</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Write-offs during period</td>
+<td>No write-off transaction stream.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-10c</td>
+<td>—</td>
+<td><span class="badge inquiry-only">inquiry-only</span></td>
+<td>Write-off authorization</td>
+<td>Auditor workflow.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-10d</td>
+<td>—</td>
+<td><span class="badge inquiry-only">inquiry-only</span></td>
+<td>Reclass current → noncurrent</td>
+<td>Judgement-based; given AR-9a all maturities ≤ 45 days.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-10e</td>
+<td>—</td>
+<td>applied (partial)</td>
+<td>Allowance ratio analysis</td>
+<td>Re-uses AR-1e-3/4 (data-missing for allowance terms). Computable: turnover ≈ 0.56 (caveat in AR-1e-1).</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-10f</td>
+<td>—</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Post-balance-sheet adjustments</td>
+<td>No subsequent-period AR adjustments stream.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-11a</td>
+<td>A,B,C</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Last shipments before bs to sales journal</td>
+<td>No shipping-document table; Online has <code>TrackingNumber</code> but no ship-date column distinct from order <code>Date</code>.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-11b</td>
+<td>A,B,C</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>First shipments after bs to sales journal</td>
+<td>as AR-11a.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-11c</td>
+<td>A,B,C</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Last sales-journal entries → shipping docs</td>
+<td>as AR-11a.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-11d</td>
+<td>A,B,C</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>First sales-journal entries → shipping docs</td>
+<td>as AR-11a.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-12a</td>
+<td>A,B,C</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Proof of cash</td>
+<td>No bank-statement series.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-12b</td>
+<td>A,B,C</td>
+<td><span class="badge inquiry-only">inquiry-only</span></td>
+<td>Expand confirmations</td>
+<td>Auditor workflow (population is 5 customers — already maximal).</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-12c</td>
+<td>A,B,C</td>
+<td><span class="badge inquiry-only">inquiry-only</span></td>
+<td>Confirm unusual write-offs</td>
+<td>No write-offs observable.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-12d</td>
+<td>A,B,C</td>
+<td><span class="badge applied">applied</span></td>
+<td>UnitPrice deviation from product median (CPH)</td>
+<td>Median absolute deviation per product is 0%; 905 / 1,800 rows (50.3%) deviate by <strong>&gt; 50%</strong> from product median. Distribution: min −98.7%, max +114.8%, std 58.6%. Suggests CPH <code>UnitPrice</code> is <strong>not</strong> anchored to a list price — pricing is per-transaction free-form. List-price reconciliation infeasible without a price-list table.</td>
+<td>905</td>
+</tr>
+<tr>
+<td>AR-12e</td>
+<td>A,B,C</td>
+<td><span class="badge inquiry-only">inquiry-only</span></td>
+<td>Verify customer-location delivery</td>
+<td>Physical evidence.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-12f</td>
+<td>A,B,C</td>
+<td><span class="badge applied">applied</span></td>
+<td>Pre-numbered sequential gap analysis on ARID and OrderID</td>
+<td>ARID range 20000–20899 (900 IDs, 0 missing, all gaps = 1). OrderID range 200000–201199 (1,200 IDs, 0 missing). <strong>Perfectly contiguous numbering across all years</strong> is itself unusual for a real ledger (no voided or cancelled invoices).</td>
+<td>0 (clean — but suspicious)</td>
+</tr>
+<tr>
+<td>AR-12g</td>
+<td>A,B,C</td>
+<td><span class="badge inquiry-only">inquiry-only</span></td>
+<td>Original-document examination</td>
+<td>Physical evidence.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-12h</td>
+<td>A,B,C</td>
+<td><span class="badge inquiry-only">inquiry-only</span></td>
+<td>Telephone customers</td>
+<td>Auditor workflow.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-12i</td>
+<td>A,B,C</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Customer-complaint trends</td>
+<td>No complaints log. CPH <code>ReviewRating</code> is product-level not invoice-level.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-12j</td>
+<td>A,B,C</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Salespeople quota motives</td>
+<td>No quota / commission data.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-12k</td>
+<td>A,B,C</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Daily cash receipts to bank</td>
+<td>No daily-cash / bank series.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-13a–c</td>
+<td>C</td>
+<td><span class="badge not-applicable">not-applicable</span></td>
+<td>Fair-value disclosures</td>
+<td>Trade AR with <code>Net 45</code> terms; voluntary FV disclosure not indicated.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-14a–d</td>
+<td>A,C</td>
+<td><span class="badge not-applicable">not-applicable</span></td>
+<td>Transfers / FAS-140 sale criteria</td>
+<td>No transfer-of-receivables transactions present.</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AR-15</td>
+<td>—</td>
+<td><span class="badge not-applicable">not-applicable</span></td>
+<td>Tests-of-Controls cross-reference</td>
+<td>Separate program.</td>
+<td>n/a</td>
+</tr>
+</tbody>
+</table>
+<h3 id="counts">Counts</h3>
+<ul>
+<li>applied (incl. partial): <strong>18</strong></li>
+<li>inquiry-only: <strong>17</strong></li>
+<li>data-missing: <strong>18</strong></li>
+<li>not-applicable: <strong>8</strong></li>
+</ul>
+<h2 id="cross-cutting-findings-synthetic-data-signals">Cross-cutting findings (synthetic-data signals)</h2>
+<p>The AR file passes its internal arithmetic but the <strong>shape</strong> of the data is the audit signal:</p>
+<ol>
+<li><strong>Currency-amount independence</strong> (g0 narrative-alignment fail). Median ratio across AUD/CAD/EUR/GBP/USD = 1.14x. Real-world FX would produce ≥ 1.5x for these pairs. AR <code>Amount</code> is unit-blind.</li>
+<li><strong>Term homogeneity.</strong> All 900 AR invoices have <code>Terms = "Net 45"</code> and <code>DueDate − InvoiceDate = 45 days exactly</code>. No special-terms clients, no custom credit periods. Implausible for a 5-customer wholesale book.</li>
+<li><strong>Status alphabet.</strong> {Open, Partial, Received} only — no Cancelled, Disputed, WrittenOff, RefundIssued. No "Paid" status either; "Received" is the lifecycle terminal state.</li>
+<li><strong>Zero returns / credit memos</strong> across 5,900 sales rows over 30 months and 0 negative AR amounts. Combined with absence of any allowance / write-off stream means the engagement has <strong>no ability to test allowance adequacy from data alone</strong> (AR-1e-3, -4; AR-10b).</li>
+<li><strong>Amount cap.</strong> 99th-pct = $7,954; max = $7,996 — distribution suggests a synthetic ceiling near $8,000 rather than long-tailed real-world invoices.</li>
+<li><strong>No GL AR control account.</strong> GL chart contains only Travel Expense, Online Sales, Sales Revenue, COGS, Payroll Expense. AR-listing-to-GL reconciliation (AR-2b) is structurally impossible.</li>
+<li><strong>90+ bucket dominance.</strong> $1,995,260 of $2,385,726 (83.6%) of unpaid AR is in the 90+ bucket. If real, this is a <strong>going-concern signal</strong>; given (1)-(6) it is more likely a synthetic-data artifact (no payment-collection model in the data generator).</li>
+<li><strong>Customer concentration.</strong> Only 5 customer names total; Open+Partial is roughly evenly distributed ($445k–$525k each). No long tail.</li>
+</ol>
+<h2 id="embedded-test-code">Embedded test code</h2>
+<p>The full Python script that produced the numbers above is at <code>/tmp/ar_substantive_tests.py</code> (run with <code>/Users/rantene/gits/semantic-enricher/.venv/bin/python</code>). It loads AR, GL, AP, Expense-Claims, CPH, Online and Retail CSVs, fixes the balance-sheet date at the latest GL <code>TxnDate</code> (2025-06-30), and prints intermediate counts before each <code>RESULT:</code>.</p>
+<h3 id="ar-1d-code-excerpt">AR-1d code (excerpt)</h3>
+<pre><code class="language-python">unpaid = ar[ar[&quot;Status&quot;].isin([&quot;Open&quot;, &quot;Partial&quot;])].copy()
+unpaid[&quot;days_past_due&quot;] = (bs_date - unpaid[&quot;DueDate&quot;]).dt.days
+unpaid[&quot;bucket&quot;] = pd.cut(
+    unpaid[&quot;days_past_due&quot;],
+    bins=[-10**9, 0, 30, 60, 90, 10**9],
+    labels=[&quot;not-due&quot;, &quot;0-30&quot;, &quot;31-60&quot;, &quot;61-90&quot;, &quot;90+&quot;],
+)
+unpaid.groupby(&quot;bucket&quot;, observed=True).agg(count=(&quot;ARID&quot;,&quot;count&quot;), total=(&quot;Amount&quot;,&quot;sum&quot;))
+</code></pre>
+<h3 id="ar-1e-1-code-excerpt">AR-1e-1 code (excerpt)</h3>
+<pre><code class="language-python">yr_sales = ar[ar[&quot;InvoiceDate&quot;].dt.year == 2024][&quot;Amount&quot;].sum()
+avg_ar = unpaid[&quot;Amount&quot;].sum()
+turnover = yr_sales / avg_ar  # 0.56
+days_sales = 365 / turnover    # 655
+</code></pre>
+<h3 id="ar-2b-code-excerpt">AR-2b code (excerpt)</h3>
+<pre><code class="language-python">ar_gl_acc = gl[gl[&quot;AccountName&quot;].str.contains(&quot;Receiv|AR|Customer&quot;, case=False, regex=True, na=False)]
+# len(ar_gl_acc) == 0 -&gt; reconciliation impossible
+</code></pre>
+<h3 id="ar-2c-code-excerpt">AR-2c code (excerpt)</h3>
+<pre><code class="language-python">p99 = ar[&quot;Amount&quot;].quantile(0.99)            # 7954.10
+big = ar[ar[&quot;Amount&quot;] &gt;= p99].sort_values(&quot;Amount&quot;, ascending=False)
+</code></pre>
+<h3 id="ar-8d-code-excerpt">AR-8d code (excerpt)</h3>
+<pre><code class="language-python">vendor_names = set(ap[&quot;Vendor&quot;].dropna().str.lower().unique())
+ar_customers = set(ar[&quot;Customer&quot;].dropna().str.lower().unique())
+overlap = vendor_names &amp; ar_customers   # set()
+</code></pre>
+<h3 id="ar-9a-code-excerpt">AR-9a code (excerpt)</h3>
+<pre><code class="language-python">ar[&quot;days_to_due&quot;] = (ar[&quot;DueDate&quot;] - ar[&quot;InvoiceDate&quot;]).dt.days
+# .min() == .max() == 45 ; .nunique() == 1
+</code></pre>
+<h3 id="ar-12d-code-excerpt">AR-12d code (excerpt)</h3>
+<pre><code class="language-python">med_by_prod = cph.groupby(&quot;Product&quot;)[&quot;UnitPrice&quot;].median()
+cph_join = cph.merge(med_by_prod.rename(&quot;median_price&quot;), left_on=&quot;Product&quot;, right_index=True)
+cph_join[&quot;dev_pct&quot;] = (cph_join[&quot;UnitPrice&quot;] - cph_join[&quot;median_price&quot;]) / cph_join[&quot;median_price&quot;] * 100
+big_dev = cph_join[cph_join[&quot;dev_pct&quot;].abs() &gt; 50]   # 905 of 1800
+</code></pre>
+<h3 id="ar-12f-code-excerpt">AR-12f code (excerpt)</h3>
+<pre><code class="language-python">arid_nums = ar[&quot;ARID&quot;].str.extract(r&quot;AR(\d+)&quot;)[0].astype(int).sort_values()
+# range 20000..20899, count 900, 0 missing
+</code></pre>
+<hr>
+<p>Footnote 1: AR-1b uses Customer-Purchase-History (CPH) as the sales-by-product-line source because the AR table lacks a product/category column. CPH grain is "one row per purchase event," which is the closest available proxy for the procedure's intent (monthly sales by product line for the current year and prior periods).</p>
+
+<footer>
+Generated by <code>/audit-program</code> from semantic-enricher enrichment.<br>
+Source template: AuditNet 201612_SubstantiveTest_AP_Template.xlsx (Sections III, IV, VII, XII).
+</footer>
+</div>
+</body>
+</html>

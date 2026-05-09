@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Accounts Payable & Purchases (Section VII) — Substantive Audit</title>
+  <style>
+:root {
+  --bg: #fafafa;
+  --fg: #1a1a1a;
+  --muted: #666;
+  --accent: #0b6cb1;
+  --border: #e3e3e3;
+  --major: #c0392b;
+  --moderate: #d68910;
+  --minor: #2980b9;
+  --info: #7f8c8d;
+  --applied: #27ae60;
+  --inquiry: #8e44ad;
+  --datamissing: #95a5a6;
+  --na: #bdc3c7;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--fg);
+  background: var(--bg);
+  margin: 0;
+  padding: 0;
+}
+.container { max-width: 1100px; margin: 0 auto; padding: 1.5rem 2rem 4rem; }
+header {
+  background: white;
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+header .nav {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  gap: 1.4rem;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+header .brand { font-weight: 600; color: var(--accent); margin-right: auto; text-decoration: none; }
+header a { color: var(--fg); text-decoration: none; font-size: 14px; }
+header a:hover { color: var(--accent); }
+header a.active { color: var(--accent); font-weight: 600; }
+h1 { font-size: 1.7rem; margin: 0.5rem 0 0.3rem; }
+h2 { font-size: 1.25rem; margin: 2rem 0 0.6rem; padding-top: 0.5rem; border-top: 1px solid var(--border); }
+h3 { font-size: 1.05rem; margin: 1.5rem 0 0.4rem; color: var(--accent); }
+h4 { font-size: 0.95rem; margin: 1rem 0 0.3rem; }
+p { margin: 0.6rem 0; }
+.subtitle { color: var(--muted); margin: 0 0 1rem; font-size: 0.9rem; }
+.meta-line { color: var(--muted); font-size: 0.85rem; margin: 0.2rem 0; }
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0.8rem 0 1.4rem;
+  font-size: 0.92rem;
+  background: white;
+}
+th, td {
+  border: 1px solid var(--border);
+  padding: 0.45rem 0.7rem;
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #f0f0f0; font-weight: 600; }
+tr:nth-child(even) td { background: #fafafa; }
+code { background: #f0f0f0; padding: 0.05rem 0.3rem; border-radius: 3px; font-size: 0.88em; }
+pre { background: #1e1e1e; color: #e0e0e0; padding: 0.9rem 1.1rem; border-radius: 5px; overflow-x: auto; font-size: 0.82rem; line-height: 1.45; }
+pre code { background: transparent; padding: 0; color: inherit; }
+ul, ol { margin: 0.4rem 0; padding-left: 1.5rem; }
+li { margin: 0.15rem 0; }
+.severity-major, .badge.major     { color: white; background: var(--major); }
+.severity-moderate, .badge.moderate { color: white; background: var(--moderate); }
+.severity-minor, .badge.minor     { color: white; background: var(--minor); }
+.severity-informational, .badge.informational { color: white; background: var(--info); }
+.severity-applied, .badge.applied { color: white; background: var(--applied); }
+.severity-inquiry-only, .badge.inquiry-only { color: white; background: var(--inquiry); }
+.severity-data-missing, .badge.data-missing { color: white; background: var(--datamissing); }
+.severity-not-applicable, .badge.not-applicable { color: var(--fg); background: var(--na); }
+.badge {
+  display: inline-block;
+  padding: 0.05rem 0.5rem;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: lowercase;
+  letter-spacing: 0.02em;
+}
+.area-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.area-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem 1.2rem;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.area-card:hover { border-color: var(--accent); box-shadow: 0 2px 6px rgba(11,108,177,0.1); }
+.area-card .name { font-size: 1.05rem; font-weight: 600; color: var(--accent); margin: 0; }
+.area-card .stats { color: var(--muted); font-size: 0.82rem; margin-top: 0.3rem; }
+.kpi-row {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  margin: 1.2rem 0;
+}
+.kpi {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 0.7rem 1rem;
+  flex: 1 1 130px;
+}
+.kpi .label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.kpi .value { font-size: 1.4rem; font-weight: 600; margin-top: 0.15rem; }
+.kpi.major .value     { color: var(--major); }
+.kpi.moderate .value  { color: var(--moderate); }
+.kpi.minor .value     { color: var(--minor); }
+.kpi.info .value      { color: var(--info); }
+footer {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+@media (max-width: 700px) {
+  .container { padding: 1rem; }
+  header { padding: 0.8rem 1rem; }
+  table { font-size: 0.85rem; }
+  th, td { padding: 0.35rem 0.45rem; }
+}
+</style>
+</head>
+<body>
+<header><nav class="nav"><a class="brand" href="index.html">Substantive Audit Program</a><a class="active" href="ap.html">Accounts Payable</a><a class="" href="ar.html">Accounts Receivable</a><a class="" href="inventory.html">Inventory</a><a class="" href="revenue_expense.html">Revenue & Expense</a></nav></header>
+<div class="container">
+
+
+<h1>Accounts Payable & Purchases (Section VII)</h1>
+<p class="subtitle"><a href="index.html">&larr; Engagement summary</a></p>
+
+<h2>Summary report</h2>
+<h1 id="substantive-findings-accounts-payable-and-purchases">Substantive findings — Accounts Payable and Purchases</h1>
+<p>Source template: AuditNet 201612_SubstantiveTest_AP_Template.xlsx (Section VII)
+Dataset: /Users/rantene/gits/audit_csv
+Enrichment: /Users/rantene/gits/audit_csv/.semantic-enricher/
+Working paper: working_paper.md</p>
+<h2 id="procedure-execution-counts">Procedure execution counts</h2>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>applied (incl. partial)</td>
+<td>12</td>
+</tr>
+<tr>
+<td><span class="badge inquiry-only">inquiry-only</span></td>
+<td>9</td>
+</tr>
+<tr>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>11</td>
+</tr>
+<tr>
+<td><span class="badge not-applicable">not-applicable</span></td>
+<td>5</td>
+</tr>
+</tbody>
+</table>
+<h2 id="findings">Findings</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Procedure</th>
+<th>Assertion(s)</th>
+<th>Finding</th>
+<th>Severity</th>
+<th>Suggested management response</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>AP-1a</td>
+<td>A,B,C</td>
+<td>AP subledger cannot be reconciled to the General Ledger — GL contains no Accounts-Payable control account (only Sales Revenue, Online Sales, COGS, Travel Expense, Payroll Expense). $1,418,925.55 of open AP balance has no GL counterpart.</td>
+<td><span class="badge major">major</span></td>
+<td>Establish an AP control account in the chart of accounts and post the subledger to it; reconcile period-end balance before closing.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>AP-1d</td>
+<td>A,C</td>
+<td>467 of 543 unpaid invoices (86%) are 90+ days past due, totaling $1,246,569 (88% of unpaid AP balance). Aging concentration this severe is implausible for a going-concern AP program.</td>
+<td><span class="badge major">major</span></td>
+<td>Investigate whether these are stale obligations, disputed items, or unposted payments; reclassify long-outstanding payables and assess impact on liquidity covenants.</td>
+</tr>
+<tr>
+<td>3</td>
+<td>AP-1a / AP-7b</td>
+<td>A,B,C</td>
+<td>Cross-currency <code>Amount</code> is not FX-adjusted (mean ratio across 5 currencies = 1.14× vs ~1.9× expected). Cites reviewer finding <code>g0/schema/narrative_alignment</code> (FAIL).</td>
+<td><span class="badge major">major</span></td>
+<td>Either translate non-functional-currency amounts at period-end FX rates and disclose the convention, or restate the data; the present figures cannot support multi-currency consolidation.</td>
+</tr>
+<tr>
+<td>4</td>
+<td>AP-4</td>
+<td>C</td>
+<td>All 800 invoices carry identical <code>Net 30</code> terms; zero variance across 5 vendors and 30 months is implausible for a real vendor population.</td>
+<td><span class="badge moderate">moderate</span></td>
+<td>Re-confirm payment terms with each vendor and update the master file; verify no extended-term arrangements warrant reclassification to notes payable.</td>
+</tr>
+<tr>
+<td>5</td>
+<td>AP-1c / AP-8c / AP-8e</td>
+<td>A,C</td>
+<td>No vendor master table is present; master-data-dependent procedures (related-party screen, vendor name/address match, multi-address detection) are not data-testable.</td>
+<td><span class="badge moderate">moderate</span></td>
+<td>Stand up a vendor master file with TIN, address, banking, and related-party flags; integrate it with AP for ongoing screening.</td>
+</tr>
+<tr>
+<td>6</td>
+<td>AP-3a / AP-3c / AP-8f / AP-8g</td>
+<td>A,B</td>
+<td>Search for unrecorded liabilities cannot be completed: no goods-received indicator, no receiving reports, no disbursement ledger, and no AP-side GL postings.</td>
+<td><span class="badge moderate">moderate</span></td>
+<td>Implement a three-way match (PO / receipt / invoice) and a disbursement ledger; surface goods-received-not-invoiced (GR-NI) at period end.</td>
+</tr>
+<tr>
+<td>7</td>
+<td>AP-2a</td>
+<td>A</td>
+<td>Vendor concentration: only 5 distinct vendors across 800 invoices, each carrying $388K–$485K. Real-world concentration this high carries supply-chain and going-concern risk.</td>
+<td><span class="badge moderate">moderate</span></td>
+<td>Document concentration risk in disclosures; assess supplier substitutability and consider broadening the vendor base.</td>
+</tr>
+<tr>
+<td>8</td>
+<td>AP-8d</td>
+<td>A,C</td>
+<td>One year-end invoice exceeds the 95th percentile: APID <code>AP10102</code>, "Fast Travel" 2024-12-27, $4,853.53 CAD, status Open.</td>
+<td><span class="badge minor">minor</span></td>
+<td>Vouch to invoice and approval evidence; confirm posting period.</td>
+</tr>
+<tr>
+<td>9</td>
+<td>AP-8h</td>
+<td>A</td>
+<td>45 invoices fall in [$4,750, $5,000); pattern reflects an artificial $4,995.39 ceiling in the synthetic data, not threshold-evasion behavior.</td>
+<td><span class="badge informational">informational</span></td>
+<td>No action required — observation reflects synthetic data ceiling.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="severity-summary">Severity summary</h2>
+<table>
+<thead>
+<tr>
+<th>Severity</th>
+<th>Count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="badge major">major</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td><span class="badge moderate">moderate</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td><span class="badge minor">minor</span></td>
+<td>1</td>
+</tr>
+<tr>
+<td><span class="badge informational">informational</span></td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h2 id="notes">Notes</h2>
+<p>The dataset is synthetic; reviewer finding <code>g0/schema/narrative_alignment</code> (FAIL) flags the same FX inconsistency cited in Finding #3. The reconciliation gap (Finding #1) is the dominant blocker for any meaningful AP-to-GL substantive testing on this engagement.</p>
+
+<h2 id="working-paper">Working paper</h2>
+<h1 id="substantive-working-paper-accounts-payable-and-purchases-section-vii">Substantive working paper — Accounts Payable and Purchases (Section VII)</h1>
+<p>Source template: AuditNet 201612_SubstantiveTest_AP_Template.xlsx
+Dataset: /Users/rantene/gits/audit_csv
+Enrichment: /Users/rantene/gits/audit_csv/.semantic-enricher/
+Generated: 2026-05-09</p>
+<h2 id="tables-in-scope">Tables in scope</h2>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Table</th>
+<th>Rows</th>
+<th>Key columns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Trade payables ledger</td>
+<td><code>BALANCE SHEET DATA__ACCOUNTS-PAYABLE</code> (<code>Balance sheet data/Accounts-Payable.csv</code>)</td>
+<td>800</td>
+<td>APID, Vendor, InvoiceDate, DueDate, Amount, Currency, Status, PaidDate, Terms</td>
+</tr>
+<tr>
+<td>General ledger</td>
+<td><code>BALANCE SHEET DATA__GENERAL-LEDGER</code> (<code>Balance sheet data/General-Ledger.csv</code>)</td>
+<td>2,000</td>
+<td>GLID, TxnDate, AccountNumber, AccountName, Debit, Credit, Dept, CostCenter, Currency</td>
+</tr>
+</tbody>
+</table>
+<p>Assumed balance-sheet date: <strong>2025-06-30</strong> (latest GL <code>TxnDate</code>). The dataset is multi-year (2023-01-01 to 2025-06-30) and contains no explicit period closure marker.</p>
+<h2 id="audit-objectives-in-scope">Audit objectives in scope</h2>
+<ul>
+<li><strong>A.</strong> Accounts payable reflected in the balance sheet represent authentic obligations and include unprocessed invoices and liabilities for goods/services received but not billed.</li>
+<li><strong>B.</strong> Accounts payable amounts agree with invoices or other supporting documents and are recorded correctly as to account and period.</li>
+<li><strong>C.</strong> Accounts payable are properly classified as current liabilities; significant debit balances are re-classified to other assets; and adequate disclosures are made for related-party AP, AP with specified payment terms, and assets pledged as collateral.</li>
+</ul>
+<h2 id="cross-cutting-reviewer-evidence-cited">Cross-cutting reviewer evidence cited</h2>
+<ul>
+<li><code>review_findings.json :: g0/schema/narrative_alignment</code> (verdict <strong>fail</strong>): "Amount distributions across the 5 currencies (USD, EUR, GBP, CAD, AUD) have a maximum scale ratio of 1.1x in all three ledgers, whereas real-world exchange rates between these currencies vary by up to ~2.0x." Confirmed in this run: AP mean ratio = 1.14x. The AP listing's <code>Amount</code> column is therefore <strong>not currency-adjusted</strong>; any ratio or magnitude analysis built on raw <code>Amount</code> is unreliable until either FX rates are applied or the engagement reverts to a single-currency presentation.</li>
+<li><code>review_findings.json :: BALANCE SHEET DATA__ACCOUNTS-PAYABLE/cluster_validation/cluster_*</code> (info): InvoiceDate→DueDate and PaidDate→InvoiceDate functional dependencies confirmed valid AP temporal structure.</li>
+</ul>
+<h2 id="procedure-results">Procedure results</h2>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Assertion(s)</th>
+<th>Status</th>
+<th>Test performed</th>
+<th>Result</th>
+<th>Exceptions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AP-1a</td>
+<td>A,B,C</td>
+<td>applied (partial)</td>
+<td>Sum AP <code>Amount</code> for open+partial rows; reconcile to GL credit balance on AP control account</td>
+<td>Listing total = $1,418,925.55; GL has <strong>no Accounts-Payable account</strong> (only Sales Revenue, Online Sales, COGS, Travel Expense, Payroll Expense). Reconciliation impossible.</td>
+<td>1 (no AP control account)</td>
+</tr>
+<tr>
+<td>AP-1b</td>
+<td>A,B,C</td>
+<td><span class="badge applied">applied</span></td>
+<td>Filter <code>Amount &lt; 0</code></td>
+<td>0 negative balances</td>
+<td>0</td>
+</tr>
+<tr>
+<td>AP-1c</td>
+<td>A,B,C</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Vendor↔customer/employee name overlap; vendor master inspection</td>
+<td>No employee table; vendor names (5 distinct: ABC Supplies, BluePrints, Fast Travel, Global Office, TechMart) do not overlap any customer master in this dataset</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AP-1d</td>
+<td>A,B,C</td>
+<td><span class="badge applied">applied</span></td>
+<td>Aging buckets vs balance-sheet date 2025-06-30 (Open/Partial only)</td>
+<td>not-due: 23 rows / $49,544; 0-30: 16/$41,725; 31-60: 20/$48,295; 61-90: 17/$32,792; <strong>90+: 467 rows / $1,246,569 (88% of unpaid total)</strong></td>
+<td>467</td>
+</tr>
+<tr>
+<td>AP-2a</td>
+<td>—</td>
+<td><span class="badge applied">applied</span></td>
+<td>Top-N vendors by balance for confirmation sample</td>
+<td>All 5 vendors carry $387K-$485K each — only 5 distinct vendors total, so a "sample" is the population</td>
+<td>0</td>
+</tr>
+<tr>
+<td>AP-2b</td>
+<td>—</td>
+<td><span class="badge inquiry-only">inquiry-only</span></td>
+<td>Mailing of confirmation requests</td>
+<td>Auditor workflow</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AP-2c</td>
+<td>—</td>
+<td><span class="badge inquiry-only">inquiry-only</span></td>
+<td>Worksheet of confirmation replies</td>
+<td>Auditor workflow</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AP-2d</td>
+<td>—</td>
+<td><span class="badge inquiry-only">inquiry-only</span></td>
+<td>Alternative procedures for non-replies</td>
+<td>Auditor workflow</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AP-3a</td>
+<td>A,B</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Disbursements after period end with goods-received indicator</td>
+<td>9 AP rows with <code>PaidDate &gt; 2025-06-30</code>, but no goods-received column on AP and no AP-related GL postings; cannot determine if pre-period liability is unrecorded</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AP-3b</td>
+<td>A,B</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Unprocessed invoice file scan</td>
+<td>No "unprocessed_invoices" table</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AP-3c</td>
+<td>A,B</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Unmatched receiving-report file scan</td>
+<td>No receiving-report table</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AP-3d</td>
+<td>A,B</td>
+<td><span class="badge inquiry-only">inquiry-only</span></td>
+<td>Inquire of accounting personnel</td>
+<td>Auditor workflow</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AP-3e</td>
+<td>A,B</td>
+<td>applied (partial)</td>
+<td>Vendor sets across years</td>
+<td>Vendors active 2023 (5/5) all reappear in 2025 — no drop-outs to investigate; only 151 invoices in 2025 vs ~325/year previously</td>
+<td>0</td>
+</tr>
+<tr>
+<td>AP-3f</td>
+<td>A,B</td>
+<td><span class="badge inquiry-only">inquiry-only</span></td>
+<td>Receiving cutoff cross-ref</td>
+<td>Cross-references inventory program</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AP-4</td>
+<td>C</td>
+<td><span class="badge applied">applied</span></td>
+<td>Filter <code>Terms</code> for non-standard / extended terms</td>
+<td>All 800 invoices have <code>Terms = "Net 30"</code> exactly. <strong>Zero variance is itself an exception</strong> — implausible for a real multi-vendor ledger.</td>
+<td>1 (uniform terms)</td>
+</tr>
+<tr>
+<td>AP-5</td>
+<td>C</td>
+<td><span class="badge inquiry-only">inquiry-only</span></td>
+<td>Pledged-asset disclosure</td>
+<td>No schema field captures collateral</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AP-6</td>
+<td>A,B</td>
+<td><span class="badge applied">applied</span></td>
+<td>Negative-amount post-period entries</td>
+<td>0 negative-amount rows</td>
+<td>0</td>
+</tr>
+<tr>
+<td>AP-7a</td>
+<td>A,B</td>
+<td>applied (partial)</td>
+<td>Period-over-period sum of AP <code>Amount</code></td>
+<td>2023: $898,844 (324 rows); 2024: $816,909 (325 rows); 2025-H1: $371,769 (151 rows). Mid-year 2025 cut-off explains the drop; no anomaly evident.</td>
+<td>0</td>
+</tr>
+<tr>
+<td>AP-7b-1</td>
+<td>A,B</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>AP turnover = Purchases / Avg AP</td>
+<td>GL has no AP control account → no purchases credit series isolable</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AP-7b-2</td>
+<td>A,B</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Days outstanding</td>
+<td>depends on AP-7b-1</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AP-7b-3</td>
+<td>A,B</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>AP / Current liabilities</td>
+<td>No current-liabilities total in GL (GL has only revenue / COGS / payroll / travel — no liability accounts)</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AP-7b-4</td>
+<td>A,B</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Returns / purchases</td>
+<td>No purchase-returns series</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AP-8a</td>
+<td>A,B,C</td>
+<td><span class="badge inquiry-only">inquiry-only</span></td>
+<td>Blank confirmation mailings</td>
+<td>Auditor workflow</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AP-8b</td>
+<td>A,B,C</td>
+<td><span class="badge not-applicable">not-applicable</span></td>
+<td>Debit-memo collectability</td>
+<td>No debit balances in listing (AP-1b)</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AP-8c</td>
+<td>A,B,C</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Vendor name/address vs vendor master</td>
+<td>No vendor master table</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AP-8d</td>
+<td>A,B,C</td>
+<td><span class="badge applied">applied</span></td>
+<td>Year-end (2024-12-15 to 2025-01-15) entries above 95th-percentile amount</td>
+<td>1 row: APID <code>AP10102</code> Fast Travel 2024-12-27 $4,853.53 CAD Open. Single-row pattern; routine.</td>
+<td>1</td>
+</tr>
+<tr>
+<td>AP-8e</td>
+<td>A,B,C</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Vendor file duplicates / shared addresses</td>
+<td>No vendor master</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AP-8f</td>
+<td>A,B,C</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Disbursements without delivery</td>
+<td>No GL AP-disbursement entries; no goods-received reference</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AP-8g</td>
+<td>A,B,C</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Voided checks</td>
+<td>No check / disbursement table</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AP-8h</td>
+<td>A,B,C</td>
+<td><span class="badge applied">applied</span></td>
+<td>Histogram of <code>Amount</code> near common thresholds</td>
+<td>[950, 1000): 7 rows; [2375, 2500): 18 rows; [4750, 5000): 45 rows. Concentration just below $5,000 is plausibly an artificial cap (the data tops out at $4,995.39). Not a fraud indicator on its own.</td>
+<td>0</td>
+</tr>
+<tr>
+<td>AP-8i</td>
+<td>A,B,C</td>
+<td><span class="badge inquiry-only">inquiry-only</span></td>
+<td>Original cancelled-check inspection</td>
+<td>Physical evidence</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AP-9a</td>
+<td>C</td>
+<td><span class="badge not-applicable">not-applicable</span></td>
+<td>FV consistency</td>
+<td>No voluntary FV disclosure indicated</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AP-9b</td>
+<td>C</td>
+<td><span class="badge not-applicable">not-applicable</span></td>
+<td>FV documentation</td>
+<td>as above</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AP-9c</td>
+<td>C</td>
+<td><span class="badge not-applicable">not-applicable</span></td>
+<td>FV method/assumptions disclosure</td>
+<td>as above</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>AP-10</td>
+<td>—</td>
+<td><span class="badge not-applicable">not-applicable</span></td>
+<td>Tests-of-Controls cross-reference</td>
+<td>Separate program</td>
+<td>n/a</td>
+</tr>
+</tbody>
+</table>
+<h3 id="counts">Counts</h3>
+<ul>
+<li>applied (incl. partial): 12</li>
+<li>inquiry-only: 9</li>
+<li>data-missing: 11</li>
+<li>not-applicable: 5</li>
+</ul>
+<h2 id="embedded-test-code">Embedded test code</h2>
+<p>The full Python script that produced the numbers above is at <code>/tmp/ap_substantive_tests.py</code> (run with the project venv: <code>/Users/rantene/gits/semantic-enricher/.venv/bin/python</code>). It loads <code>Balance sheet data/Accounts-Payable.csv</code> and <code>General-Ledger.csv</code>, fixes the balance-sheet date at the latest GL <code>TxnDate</code> (2025-06-30), and prints intermediate counts before each <code>RESULT:</code>.</p>
+<h3 id="ap-1a-code-excerpt">AP-1a code (excerpt)</h3>
+<pre><code class="language-python">open_mask = (ap[&quot;Status&quot;].isin([&quot;Open&quot;, &quot;Partial&quot;])) &amp; (ap[&quot;InvoiceDate&quot;] &lt;= balance_sheet_date)
+total_listing = ap.loc[open_mask, &quot;Amount&quot;].sum()  # 1_418_925.55
+ap_gl = gl[gl[&quot;AccountName&quot;].str.contains(&quot;Payab|Vendor|AP&quot;, case=False, regex=True, na=False)]
+# len(ap_gl) == 0 -&gt; reconciliation impossible
+</code></pre>
+<h3 id="ap-1d-code-excerpt">AP-1d code (excerpt)</h3>
+<pre><code class="language-python">unpaid = ap[ap[&quot;Status&quot;].isin([&quot;Open&quot;, &quot;Partial&quot;])].copy()
+unpaid[&quot;days_past_due&quot;] = (balance_sheet_date - unpaid[&quot;DueDate&quot;]).dt.days
+unpaid[&quot;bucket&quot;] = pd.cut(
+    unpaid[&quot;days_past_due&quot;],
+    bins=[-10**9, 0, 30, 60, 90, 10**9],
+    labels=[&quot;not-due&quot;, &quot;0-30&quot;, &quot;31-60&quot;, &quot;61-90&quot;, &quot;90+&quot;],
+)
+unpaid.groupby(&quot;bucket&quot;, observed=True).agg(count=(&quot;APID&quot;,&quot;count&quot;), total=(&quot;Amount&quot;,&quot;sum&quot;))
+</code></pre>
+<h3 id="ap-7a-code-excerpt">AP-7a code (excerpt)</h3>
+<pre><code class="language-python">ap[&quot;year&quot;] = ap[&quot;InvoiceDate&quot;].dt.year
+ap.groupby(&quot;year&quot;)[&quot;Amount&quot;].agg([&quot;count&quot;,&quot;sum&quot;])
+</code></pre>
+<h3 id="ap-8d-code-excerpt">AP-8d code (excerpt)</h3>
+<pre><code class="language-python">year_end = ap[(ap[&quot;InvoiceDate&quot;] &gt;= &quot;2024-12-15&quot;) &amp; (ap[&quot;InvoiceDate&quot;] &lt;= &quot;2025-01-15&quot;)]
+p95 = ap[&quot;Amount&quot;].quantile(0.95)
+ye_large = year_end[year_end[&quot;Amount&quot;] &gt;= p95]
+</code></pre>
+<h3 id="ap-8h-code-excerpt">AP-8h code (excerpt)</h3>
+<pre><code class="language-python">for t in (1000, 2500, 5000):
+    near = ap[(ap[&quot;Amount&quot;] &gt;= 0.95*t) &amp; (ap[&quot;Amount&quot;] &lt; t)]
+</code></pre>
+
+<footer>
+Generated by <code>/audit-program</code> from semantic-enricher enrichment.<br>
+Source template: AuditNet 201612_SubstantiveTest_AP_Template.xlsx (Sections III, IV, VII, XII).
+</footer>
+</div>
+</body>
+</html>

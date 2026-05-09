@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Revenues & Expenses (Section XII) — Substantive Audit</title>
+  <style>
+:root {
+  --bg: #fafafa;
+  --fg: #1a1a1a;
+  --muted: #666;
+  --accent: #0b6cb1;
+  --border: #e3e3e3;
+  --major: #c0392b;
+  --moderate: #d68910;
+  --minor: #2980b9;
+  --info: #7f8c8d;
+  --applied: #27ae60;
+  --inquiry: #8e44ad;
+  --datamissing: #95a5a6;
+  --na: #bdc3c7;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--fg);
+  background: var(--bg);
+  margin: 0;
+  padding: 0;
+}
+.container { max-width: 1100px; margin: 0 auto; padding: 1.5rem 2rem 4rem; }
+header {
+  background: white;
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+header .nav {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  gap: 1.4rem;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+header .brand { font-weight: 600; color: var(--accent); margin-right: auto; text-decoration: none; }
+header a { color: var(--fg); text-decoration: none; font-size: 14px; }
+header a:hover { color: var(--accent); }
+header a.active { color: var(--accent); font-weight: 600; }
+h1 { font-size: 1.7rem; margin: 0.5rem 0 0.3rem; }
+h2 { font-size: 1.25rem; margin: 2rem 0 0.6rem; padding-top: 0.5rem; border-top: 1px solid var(--border); }
+h3 { font-size: 1.05rem; margin: 1.5rem 0 0.4rem; color: var(--accent); }
+h4 { font-size: 0.95rem; margin: 1rem 0 0.3rem; }
+p { margin: 0.6rem 0; }
+.subtitle { color: var(--muted); margin: 0 0 1rem; font-size: 0.9rem; }
+.meta-line { color: var(--muted); font-size: 0.85rem; margin: 0.2rem 0; }
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0.8rem 0 1.4rem;
+  font-size: 0.92rem;
+  background: white;
+}
+th, td {
+  border: 1px solid var(--border);
+  padding: 0.45rem 0.7rem;
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #f0f0f0; font-weight: 600; }
+tr:nth-child(even) td { background: #fafafa; }
+code { background: #f0f0f0; padding: 0.05rem 0.3rem; border-radius: 3px; font-size: 0.88em; }
+pre { background: #1e1e1e; color: #e0e0e0; padding: 0.9rem 1.1rem; border-radius: 5px; overflow-x: auto; font-size: 0.82rem; line-height: 1.45; }
+pre code { background: transparent; padding: 0; color: inherit; }
+ul, ol { margin: 0.4rem 0; padding-left: 1.5rem; }
+li { margin: 0.15rem 0; }
+.severity-major, .badge.major     { color: white; background: var(--major); }
+.severity-moderate, .badge.moderate { color: white; background: var(--moderate); }
+.severity-minor, .badge.minor     { color: white; background: var(--minor); }
+.severity-informational, .badge.informational { color: white; background: var(--info); }
+.severity-applied, .badge.applied { color: white; background: var(--applied); }
+.severity-inquiry-only, .badge.inquiry-only { color: white; background: var(--inquiry); }
+.severity-data-missing, .badge.data-missing { color: white; background: var(--datamissing); }
+.severity-not-applicable, .badge.not-applicable { color: var(--fg); background: var(--na); }
+.badge {
+  display: inline-block;
+  padding: 0.05rem 0.5rem;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: lowercase;
+  letter-spacing: 0.02em;
+}
+.area-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.area-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem 1.2rem;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.area-card:hover { border-color: var(--accent); box-shadow: 0 2px 6px rgba(11,108,177,0.1); }
+.area-card .name { font-size: 1.05rem; font-weight: 600; color: var(--accent); margin: 0; }
+.area-card .stats { color: var(--muted); font-size: 0.82rem; margin-top: 0.3rem; }
+.kpi-row {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  margin: 1.2rem 0;
+}
+.kpi {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 0.7rem 1rem;
+  flex: 1 1 130px;
+}
+.kpi .label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.kpi .value { font-size: 1.4rem; font-weight: 600; margin-top: 0.15rem; }
+.kpi.major .value     { color: var(--major); }
+.kpi.moderate .value  { color: var(--moderate); }
+.kpi.minor .value     { color: var(--minor); }
+.kpi.info .value      { color: var(--info); }
+footer {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+@media (max-width: 700px) {
+  .container { padding: 1rem; }
+  header { padding: 0.8rem 1rem; }
+  table { font-size: 0.85rem; }
+  th, td { padding: 0.35rem 0.45rem; }
+}
+</style>
+</head>
+<body>
+<header><nav class="nav"><a class="brand" href="index.html">Substantive Audit Program</a><a class="" href="ap.html">Accounts Payable</a><a class="" href="ar.html">Accounts Receivable</a><a class="" href="inventory.html">Inventory</a><a class="active" href="revenue_expense.html">Revenue & Expense</a></nav></header>
+<div class="container">
+
+
+<h1>Revenues & Expenses (Section XII)</h1>
+<p class="subtitle"><a href="index.html">&larr; Engagement summary</a></p>
+
+<h2>Summary report</h2>
+<h1 id="substantive-findings-revenues-and-expenses">Substantive findings — Revenues and Expenses</h1>
+<p>Source template: AuditNet 201612_SubstantiveTest_AP_Template.xlsx (Section XII)
+Dataset: /Users/rantene/gits/audit_csv
+Enrichment: /Users/rantene/gits/audit_csv/.semantic-enricher/
+Working paper: working_paper.md</p>
+<h2 id="procedure-execution-counts">Procedure execution counts</h2>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="badge applied">applied</span></td>
+<td>10</td>
+</tr>
+<tr>
+<td><span class="badge inquiry-only">inquiry-only</span></td>
+<td>1</td>
+</tr>
+<tr>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>9</td>
+</tr>
+<tr>
+<td><span class="badge not-applicable">not-applicable</span></td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h2 id="findings">Findings</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Procedure</th>
+<th>Assertion(s)</th>
+<th>Finding</th>
+<th>Severity</th>
+<th>Suggested management response</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Trial-balance check</td>
+<td>A,B,C,D,E</td>
+<td>GL is not in balance — total Debits $1,210,240.47 vs total Credits $1,973,281.93 (diff $-763,041.46, ~39% imbalance), invalidating every Section XII account-level ratio.</td>
+<td><span class="badge major">major</span></td>
+<td>Diagnose why single-sided GL postings are unbalanced; reconcile and re-post before any P&amp;L analytics can be supported.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>REVENUE_EXPENSE-1c</td>
+<td>A,B</td>
+<td>GL revenue $1.97M vs sales-tables revenue $7.85M; ~$5.9M gap (~24% coverage) — completeness (Objective B) cannot be supported.</td>
+<td><span class="badge major">major</span></td>
+<td>Reconcile sales-channel ledgers to GL; identify whether channels are unposted, deferred, or routed through a non-revenue account.</td>
+</tr>
+<tr>
+<td>3</td>
+<td>REVENUE_EXPENSE-1b</td>
+<td>A</td>
+<td>Returns are 24.8% of orders / $1.11M (25.3% of revenue) yet no contra-revenue or allowance-for-returns account exists in the GL.</td>
+<td><span class="badge major">major</span></td>
+<td>Establish a contra-revenue / allowance-for-returns account; book returns through it so the income statement reflects net-of-returns revenue.</td>
+</tr>
+<tr>
+<td>4</td>
+<td>REVENUE_EXPENSE-3</td>
+<td>A,B,C,D</td>
+<td>Top 20 GL entries cluster in $4,936–$4,999 — just-under-$5,000 threshold bunching consistent with approval-bypass risk.</td>
+<td><span class="badge major">major</span></td>
+<td>Investigate approval thresholds and review individual entries for split-payment patterns; tighten threshold controls.</td>
+</tr>
+<tr>
+<td>5</td>
+<td>REVENUE_EXPENSE-1l</td>
+<td>C,D</td>
+<td>Travel Expense = 34.07% of total debits, exceeding Payroll and COGS — atypical mix for the entity's stated retail-operations profile.</td>
+<td><span class="badge moderate">moderate</span></td>
+<td>Vouch a sample of travel entries; confirm classification and policy compliance; consider whether some belong in COGS or a different operating account.</td>
+</tr>
+<tr>
+<td>6</td>
+<td>REVENUE_EXPENSE-2</td>
+<td>C,D</td>
+<td>GL has only 5 accounts; Rent, Repairs &amp; Maintenance, Legal, Contributions, Other Income, and Misc are all absent — six prescribed procedures cannot be performed.</td>
+<td><span class="badge moderate">moderate</span></td>
+<td>Expand the chart of accounts to mirror standard P&amp;L categorisation; backfill historical postings into the new accounts.</td>
+</tr>
+<tr>
+<td>7</td>
+<td>REVENUE_EXPENSE-2e</td>
+<td>C,D</td>
+<td>All 412 Travel rows have generic <code>AutoPost &lt;id&gt;</code> descriptions — no supporting documentation in the data.</td>
+<td><span class="badge moderate">moderate</span></td>
+<td>Require descriptive narrations or supporting-document references on every journal line; revisit the auto-posting workflow.</td>
+</tr>
+<tr>
+<td>8</td>
+<td>REVENUE_EXPENSE-1f</td>
+<td>C,D</td>
+<td>Payroll/Sales ratio = 5.1% vs 20.3% depending on revenue base; un-interpretable until Finding #2 is resolved.</td>
+<td><span class="badge minor">minor</span></td>
+<td>Re-run after GL/sales reconciliation; document the chosen revenue base for the ratio.</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Auxiliary</td>
+<td>C</td>
+<td>Expense-Claims <code>Amount</code> aggregated across 5 currencies with no FX adjustment (matches <code>name_collision/Amount</code> trap and reviewer FX FAIL).</td>
+<td><span class="badge minor">minor</span></td>
+<td>Translate or denominate per functional currency before aggregation.</td>
+</tr>
+<tr>
+<td>10</td>
+<td>REVENUE_EXPENSE-1c</td>
+<td>C,D</td>
+<td>Budget-vs-Actual FY2025 variances all within ±5.1% — observation only on synthetic data.</td>
+<td><span class="badge informational">informational</span></td>
+<td>No action required; observation reflects synthetic-data tolerance band.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="severity-summary">Severity summary</h2>
+<table>
+<thead>
+<tr>
+<th>Severity</th>
+<th>Count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="badge major">major</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td><span class="badge moderate">moderate</span></td>
+<td>3</td>
+</tr>
+<tr>
+<td><span class="badge minor">minor</span></td>
+<td>2</td>
+</tr>
+<tr>
+<td><span class="badge informational">informational</span></td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h2 id="notes">Notes</h2>
+<p>The GL imbalance (Finding #1) and the ~$5.9M GL-vs-sales-tables revenue gap (Finding #2) are the dominant blockers for analytical procedures in Section XII. Most ratio analytics that depend on a balanced trial balance and complete revenue posting are reported as <code>data-missing</code> or are noted as un-interpretable in the working paper until those two issues are resolved.</p>
+
+<h2 id="working-paper">Working paper</h2>
+<h1 id="substantive-working-paper-revenues-and-expenses-section-xii">Substantive working paper - Revenues and Expenses (Section XII)</h1>
+<p>Source template: AuditNet 201612_SubstantiveTest_AP_Template.xlsx (Section XII extract)
+Dataset: /Users/rantene/gits/audit_csv
+Enrichment: /Users/rantene/gits/audit_csv/.semantic-enricher/
+Generated: 2026-05-09</p>
+<h2 id="tables-in-scope">Tables in scope</h2>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Table</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>General ledger (revenue + expense accounts)</td>
+<td><code>BALANCE SHEET DATA__GENERAL-LEDGER</code> (2,000 rows; 5 accounts; 2023-01..2025-06)</td>
+</tr>
+<tr>
+<td>Sales journal - online</td>
+<td><code>SALES DATA__ONLINE-STORE-ORDERS</code> (rev=$1.26M)</td>
+</tr>
+<tr>
+<td>Sales journal - retail</td>
+<td><code>SALES DATA__RETAIL-STORE-TRANSACTIONS</code> (rev=$2.21M)</td>
+</tr>
+<tr>
+<td>Sales by product / region (incl. Returned flag)</td>
+<td><code>SALES DATA__PRODUCT-SALES-REGION</code> (rev=$4.38M; 372/1,500 returns)</td>
+</tr>
+<tr>
+<td>Customer purchase history</td>
+<td><code>SALES DATA__CUSTOMER-PURCHASE-HISTORY</code></td>
+</tr>
+<tr>
+<td>Budget / forecast</td>
+<td><code>BALANCE SHEET DATA__BUDGET-FORECAST</code> (FY2024, FY2025; by Dept/Quarter)</td>
+</tr>
+<tr>
+<td>Expense reimbursements (T&amp;E)</td>
+<td><code>BALANCE SHEET DATA__EXPENSE-CLAIMS</code> (1,000 rows, 5 currencies)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="audit-objectives-in-scope">Audit objectives in scope</h2>
+<ul>
+<li><strong>A.</strong> Billings are for the correct amount; revenues are recorded correctly as to account, amount, and period; uncollectible amounts, sales returns, and allowances are adequately provided for.</li>
+<li><strong>B.</strong> All revenues earned during the year have been recorded; recorded revenues represent valid transactions applicable to goods shipped or services rendered.</li>
+<li><strong>C.</strong> Expenses and costs of products/services are valid, complete, and recorded correctly as to account, amount, and period.</li>
+<li><strong>D.</strong> Recorded expenses include costs which are properly allocable to the year and are properly matched with revenues.</li>
+<li><strong>E.</strong> Revenues, costs of revenues, income, and expenses are properly classified in the statement of operations, and adequate disclosures are made in accordance with GAAP.</li>
+</ul>
+<h2 id="procedure-results">Procedure results</h2>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Assertion(s)</th>
+<th>Status</th>
+<th>Test performed</th>
+<th>Result</th>
+<th>Exceptions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>REVENUE_EXPENSE-1a</td>
+<td>A,B,C,D</td>
+<td><span class="badge applied">applied</span></td>
+<td>Monthly sales by Product and by Region from PRODUCT-SALES-REGION; 30 months across FY2023-2025</td>
+<td>Multi-period series produced; large month-on-month swings (e.g., West region 2024-06 = $3,997 vs 2024-04 = $64,419, 16x)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>REVENUE_EXPENSE-1b</td>
+<td>A,B,C,D</td>
+<td><span class="badge applied">applied</span></td>
+<td>Monthly returns from PRODUCT-SALES-REGION (<code>Returned == 1</code>)</td>
+<td>372 returns / 1,500 rows = <strong>24.8% of orders, 25.3% of value ($1.11M of $4.38M)</strong></td>
+<td><strong>1 (return rate extremely high; no offsetting credit-memo activity in GL)</strong></td>
+</tr>
+<tr>
+<td>REVENUE_EXPENSE-1c</td>
+<td>A,B,C,D</td>
+<td>partial</td>
+<td>Identified revenue accounts (<code>Online Sales</code>, <code>Sales Revenue</code>) and COGS in GL; Budget vs Actual by Dept FY2025</td>
+<td>GL revenue (credits) = $1.973M for 30 months; Sales tables show $7.85M of revenue. Budget variance per Dept ranges $-4.3k..+$21.1k</td>
+<td><strong>1 (GL revenue $1.97M vs sales-table revenue $7.85M -- 4x understated in GL)</strong></td>
+</tr>
+<tr>
+<td>REVENUE_EXPENSE-1d</td>
+<td>A,B,C,D</td>
+<td><span class="badge applied">applied</span></td>
+<td>Revenue / units across the three sales tables</td>
+<td>PSR $280/unit, Online $358/unit, Retail $200/unit; 30,208 total units, $7.85M revenue</td>
+<td>0 (intra-channel ratios stable)</td>
+</tr>
+<tr>
+<td>REVENUE_EXPENSE-1e</td>
+<td>A,B,C,D</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Material/labor/overhead breakdown</td>
+<td>GL has a single <code>COGS</code> account and no Material/Labor/Overhead split; no cost-accounting tables</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>REVENUE_EXPENSE-1f</td>
+<td>A,B,C,D</td>
+<td>partial</td>
+<td><code>Payroll Expense</code> account isolated and ratios computed</td>
+<td>Payroll $399,924 over 30 months (33% of total debits); Payroll/Sales = 5.1% based on sales-tables revenue, 20.3% based on GL revenue -- divergence depends on which revenue base is correct</td>
+<td><strong>1 (ratio result depends entirely on revenue gap from -1c)</strong></td>
+</tr>
+<tr>
+<td>REVENUE_EXPENSE-1g</td>
+<td>A,B,C,D</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Benefits / pension expense</td>
+<td>No benefits or pension account exists in GL</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>REVENUE_EXPENSE-1h</td>
+<td>A,B,C,D</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Comp / FTE</td>
+<td>No headcount data; no <code>EmployeeID -&gt; period gross pay</code> table</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>REVENUE_EXPENSE-1i</td>
+<td>A,B,C,D</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Payroll tax % wages</td>
+<td>No payroll-tax account in GL</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>REVENUE_EXPENSE-1j</td>
+<td>A,B,C,D</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Other income YoY</td>
+<td>No <code>other income</code>, <code>interest income</code>, <code>misc income</code> accounts in GL</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>REVENUE_EXPENSE-1k</td>
+<td>A,B,C,D</td>
+<td><span class="badge applied">applied</span></td>
+<td>GL pivot AccountName x Year on Debit; YoY deltas</td>
+<td>2025 totals lower than 2024 (mid-year cutoff: GL ends 2025-06-30); Travel exp grew 16% 2023-&gt;2024, dropped to ~half 2024-&gt;2025-mid; COGS grew 18% 2023-&gt;2024</td>
+<td>0 (declines explained by mid-year cutoff in 2025)</td>
+</tr>
+<tr>
+<td>REVENUE_EXPENSE-1l</td>
+<td>A,B,C,D</td>
+<td><span class="badge applied">applied</span></td>
+<td>Each account as % of total debits</td>
+<td>Travel 34.07%, Payroll 33.04%, COGS 32.88%; Online Sales 0%, Sales Revenue 0% (revenue accounts have no debits)</td>
+<td><strong>1 (Travel is the largest expense category at 34% -- atypical; would normally be a small line)</strong></td>
+</tr>
+<tr>
+<td>REVENUE_EXPENSE-2a</td>
+<td>C,D</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Top Rent disbursements</td>
+<td>No <code>rent</code> account in GL</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>REVENUE_EXPENSE-2b</td>
+<td>C,D</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Repairs and maintenance</td>
+<td>No R&amp;M account in GL</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>REVENUE_EXPENSE-2c</td>
+<td>C,D</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Legal / professional fees</td>
+<td>No legal/professional account in GL</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>REVENUE_EXPENSE-2d</td>
+<td>C,D</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Contributions</td>
+<td>No contributions/charitable account in GL</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>REVENUE_EXPENSE-2e</td>
+<td>C,D</td>
+<td><span class="badge applied">applied</span></td>
+<td>Top T&amp;E disbursements</td>
+<td>412 GL rows, total $412,380; max $1,992.58 (GL001624 Travel Expense IT 2024-04-04). Cross-reference Expense-Claims 1,000 rows totalling ~$418k across 5 currencies</td>
+<td><strong>1 (top 10 entries identical-shape "AutoPost <id>" descriptions -- no supporting documentation in data)</strong></td>
+</tr>
+<tr>
+<td>REVENUE_EXPENSE-2f</td>
+<td>C,D</td>
+<td><span class="badge data-missing">data-missing</span></td>
+<td>Misc / other / sundry</td>
+<td>No misc/other/sundry account in GL</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>REVENUE_EXPENSE-3</td>
+<td>A,B,C,D</td>
+<td><span class="badge applied">applied</span></td>
+<td>Per-account z-score (|z|&gt;3) AND global 99th-pct outlier scan</td>
+<td>Per-account z&gt;3: 0 rows. Global p99=$4,897.22; top 15 are all Sales-Revenue / Online-Sales credits in $4,936-$4,999 band</td>
+<td><strong>1 (top 20 large entries cluster suspiciously just under $5,000 -- threshold-bunching pattern)</strong></td>
+</tr>
+<tr>
+<td>REVENUE_EXPENSE-4</td>
+<td>E</td>
+<td><span class="badge inquiry-only">inquiry-only</span></td>
+<td>Classification &amp; disclosure adequacy</td>
+<td>Judgement-based; depends on the financial statements being prepared</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>REVENUE_EXPENSE-5</td>
+<td>-</td>
+<td><span class="badge not-applicable">not-applicable</span></td>
+<td>Tests-of-controls reference</td>
+<td>Separate Tests-of-Controls program</td>
+<td>n/a</td>
+</tr>
+</tbody>
+</table>
+<h2 id="auxiliary-checks-cross-cutting">Auxiliary checks (cross-cutting)</h2>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Result</th>
+<th>Implication</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Trial-balance sanity (sum Debit vs sum Credit on full GL)</td>
+<td>Debit $1,210,240.47, Credit $1,973,281.93, <strong>diff = $-763,041.46</strong></td>
+<td>The GL extract supplied is <strong>NOT in balance</strong>. Either the dataset is a partial extract (revenue side only) or the GL is genuinely misposted. Either way every ratio relying on GL totals (1c, 1f, 1k, 1l) inherits this defect.</td>
+</tr>
+<tr>
+<td>GL account population</td>
+<td>5 accounts only: Online Sales, Sales Revenue, Travel Expense, Payroll Expense, COGS</td>
+<td>Section XII analytics that depend on rent / R&amp;M / legal / contributions / other income / misc cannot be performed (procedures 2a, 2b, 2c, 2d, 2f, 1j)</td>
+</tr>
+<tr>
+<td>Sales-table revenue vs GL revenue credits</td>
+<td>Sales tables $7.85M vs GL $1.97M (24%)</td>
+<td>Either GL is incomplete, or sales tables include channels not posted to GL, or there is a revenue completeness failure (Objective B)</td>
+</tr>
+<tr>
+<td>Returned flag in PRODUCT-SALES-REGION</td>
+<td>372 / 1,500 (24.8%); $1.11M of $4.38M (25.3%)</td>
+<td>Return rate is extremely high; no offsetting credit memos or contra-revenue lines visible in GL (Objective A: allowance/returns provision cannot be evaluated)</td>
+</tr>
+<tr>
+<td>Description column in GL</td>
+<td>All entries are "AutoPost <id>" with no narrative</td>
+<td>REVENUE_EXPENSE-2 instructs auditor to "examine the supporting documentation"; no documentation exists in this dataset</td>
+</tr>
+<tr>
+<td>Currency handling in Expense-Claims</td>
+<td>5 currencies (AUD/CAD/EUR/GBP/USD), uniform per-row totals near $400 across all currencies, no FX rates</td>
+<td>Cross-references trap finding <code>name_collision/Amount</code>; consistent with synthetic / non-FX-translated data. Do not aggregate Amount across currencies for management-letter purposes</td>
+</tr>
+</tbody>
+</table>
+<h2 id="cross-references-to-the-enrichment">Cross-references to the enrichment</h2>
+<ul>
+<li><code>trap_findings.json</code>: name-collision warnings on <code>Amount</code> between EXPENSE-CLAIMS / ACCOUNTS-PAYABLE / ACCOUNTS-RECEIVABLE underlie the cross-table caution above.</li>
+<li><code>review_findings.json</code>: cluster-validation findings on PayDate/SubmitDate (EXPENSE-CLAIMS) and InvoiceDate/DueDate (AR/AP) confirm temporal-pair structure but do not address the GL trial-balance issue, which the reviewer did not raise.</li>
+</ul>
+<h2 id="code">Code</h2>
+<p>The single Python script that produced these results is preserved at <code>/tmp/audit_revenue_expense.py</code> (full output at <code>/tmp/audit_revenue_expense.out</code>). The script: (1) loads the seven CSVs with parsed dates; (2) prints row counts, date ranges, and currency distributions; (3) computes each <code>applied</code> test deterministically and prints <code>RESULT REVENUE_EXPENSE-&lt;id&gt;: ...</code> lines; (4) emits the top-10 exception rows for each material category. Key code stanzas:</p>
+<pre><code class="language-python"># Trial balance
+total_dr = gl[&quot;Debit&quot;].fillna(0).sum()
+total_cr = gl[&quot;Credit&quot;].fillna(0).sum()
+# -&gt; 1,210,240.47 vs 1,973,281.93 (NOT balanced)
+
+# Revenue gap
+gl_revenue = gl[gl.AccountName.str.contains(&quot;revenue|sales&quot;, case=False)][&quot;Credit&quot;].sum()
+# -&gt; $1,973,281.93
+sales_table_revenue = psr.TotalPrice.sum() + oo.TotalPrice.sum() + rt.TotalPrice.sum()
+# -&gt; $7,852,397.94
+
+# Returns
+psr_ret = psr[psr.Returned == 1]
+# -&gt; 372 rows, $1,110,089.66, 25.34% of total sales
+
+# Threshold-bunching
+big = gl[gl.AmountAbs &gt;= gl.AmountAbs.quantile(0.99)]
+# -&gt; 20 rows, all $4,936-$4,999, all revenue-side credits
+</code></pre>
+
+<footer>
+Generated by <code>/audit-program</code> from semantic-enricher enrichment.<br>
+Source template: AuditNet 201612_SubstantiveTest_AP_Template.xlsx (Sections III, IV, VII, XII).
+</footer>
+</div>
+</body>
+</html>
